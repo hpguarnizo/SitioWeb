@@ -35,9 +35,13 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Foro',
+    #aplicaciones de terceros
+    'registration',
+    'crispy_forms',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,7 +55,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'StioWeb.urls'
+ROOT_URLCONF = 'SitioWeb.urls'
 
 TEMPLATES = [
     {
@@ -106,4 +110,14 @@ STATICFILES_DIRS =  os.path.join(BASE_DIR, "static"),
 STATIC_URL = '/static/'
 MEDIA_ROOT    = os.path.join(BASE_DIR ,'/media/')
 MEDIA_URL     = '/media/'
-LOGIN_URL='/login/'
+LOGIN_URL = '/cuentas/login/'
+
+
+#Django registration redux settings
+ACCOUNT_ACTIVATION_DAYS=7
+REGISTRATION_AUTO_LOGIN=True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+SITE_ID=1
+#Email backend
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

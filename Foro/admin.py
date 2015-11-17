@@ -3,6 +3,7 @@ from .models import PerfilUsuario
 from .forms import FormPerfil
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+
 # Register your models here.
 
 class PerfilAdmin(admin.ModelAdmin):
@@ -13,11 +14,13 @@ class PerfilAdmin(admin.ModelAdmin):
     form=FormPerfil
 
 
+
+
 def create_user_profile(sender, **kwargs):
     #Crear perfil cuando creamos usuario
     user = kwargs["instance"]
-    #if not PerfilUsuario.objects.filter(user=user):
-    #    PerfilUsuario(user=user).save()
+    if not PerfilUsuario.objects.filter(user=user):
+        PerfilUsuario(user=user).save()
 
 #Agregar a la vista de administración
 admin.site.register(PerfilUsuario,PerfilAdmin)

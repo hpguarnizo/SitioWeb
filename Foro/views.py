@@ -9,7 +9,7 @@ def home(request):
     contex={
         "titulo":titulo,
     }
-    return render(request,"index.html",contex)
+    return render(request, "base.html", contex)
 
 
 

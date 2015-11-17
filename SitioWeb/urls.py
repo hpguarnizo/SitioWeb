@@ -15,14 +15,19 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
+from Foro.forms import RegistrationForm
+from registration.backends.default.views import RegistrationView
 
 
 urlpatterns = [
+
+     url(r'cuentas/register/$',
+        RegistrationView.as_view(form_class = RegistrationForm),
+        name = 'registration_register'),
+
     url(r'^$','Foro.views.home',name='home'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^login/$', auth_views.login),
-    url(r'^logout/$', auth_views.logout),
+    url(r'^cuentas/', include('registration.backends.default.urls')),
 
 
 ]

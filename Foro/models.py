@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 
+
 class Foro(Model):
     titulo=CharField(max_length=60)
     #Nombre con el que figura en el sitio de administración
