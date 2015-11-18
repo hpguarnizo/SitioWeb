@@ -45,7 +45,9 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                {% if request.user.is_authenticated %}
-              <li><a href="{% url 'perfil' request.user.id %}">Bienvenido {{ request.user.username }}</a></li>
+              <li><a href="{% url 'editar_perfil' request.user.id %}">Bienvenido {{ request.user.username }}</a></li>
+               <li> {% if request.user.is_staff %} <a href="{% url 'admin:index' %}">Admin</a> {% endif %}</li>   
+
               <li><a href="{% url 'auth_logout' %}?next=/">Cerrar sesión</a></li>
                 {% else %}
                <li><a href="{% url 'registration_register' %}">Registrarse</a></li>

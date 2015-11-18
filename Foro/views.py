@@ -1,38 +1,33 @@
 from django.shortcuts import render
 from django.views.generic.edit import UpdateView
-from Foro.models import *
-from Foro.forms import FormPerfil
+from Foro.forms import *
 from PIL import Image as PImage
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.views.generic.detail import DetailView
-
+from Foro.util import redir
+import datetime
 
 # Create your views here.
 def home(request):
-    titulo="Bienvenido"
-    if request.user.is_authenticated():
-       titulo="Mi título %s" % (request.user)
+    now = datetime.datetime.now()
+    fecha=now.strftime("%Y-%m-%d")
+
     contex={
-        "titulo":titulo,
+        "fecha":fecha,
     }
-    return render(request, "base.html", contex)
+    return render(request, "listaForos.html", contex)
 
 
 class DetalleUsuario(DetailView):
     model = PerfilUsuario
 
 
-def redir(to, *args, **kwargs):
-    if not (to.startswith('/') or to.startswith("http://") or to.startswith("../") or to=='#'):
-        to = reverse(to, args=args, kwargs=kwargs)
-    return HttpResponseRedirect(to)
 
 class EditarPerfil(UpdateView):
     model = PerfilUsuario
     form_class = FormPerfil
     success_url = "#"
-    template_name = "editarPerfil.html"
+    template_name = "perfil.html"
 
 
     def form_valid(self, form):
@@ -56,3 +51,17 @@ class EditarPerfil(UpdateView):
 
 
         return redir(self.success_url)
+
+
+class EditarUsuario(UpdateView):
+    model=User
+    form_class=EditUserForm
+    template_name = "editarUsuario.html"
+
+    def get_success_url(self):
+        return reverse_lazy('editar_perfil', args = (self.object.id,))
+
+
+
+
+

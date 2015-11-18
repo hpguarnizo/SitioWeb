@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from Foro.forms import RegistrationForm,FormularioAutenticacion
+from django.contrib.auth.views import login
 from registration.backends.default.views import RegistrationView
 from django.contrib.auth.decorators import login_required as LR
-from Foro.views import EditarPerfil,DetalleUsuario
+from Foro.views import *
 from django.conf.urls.static import  static
 from SitioWeb.settings import MEDIA_URL,MEDIA_ROOT
-
+from Foro.security import anonymous_required as AR
 
 
 
@@ -30,19 +30,20 @@ urlpatterns = [
 
      url(r'^$', 'Foro.views.home', name='home'),
      url(r'^accounts/login/$',
-        'django.contrib.auth.views.login',
+        AR(login),
         name='auth_login',
         kwargs={'authentication_form':FormularioAutenticacion }
     ),
 
     url(r'accounts/register/$',
-        RegistrationView.as_view(form_class = RegistrationForm),
-        name = 'registration_register'),
+        AR(RegistrationView.as_view(form_class = RegistrationForm)),
+        name = 'registration_register') ,
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^editperfil/(?P<pk>\d+)/$' , LR(EditarPerfil.as_view()), {}, name="editar_perfil"),
-    url(r'^perfil/(?P<pk>\d+)/', LR(DetalleUsuario.as_view(template_name='perfil.html')), name="perfil")
+     url(r'^edituser/(?P<pk>\d+)/$' , LR(EditarUsuario.as_view()), {}, name="editar_user"),
+
 
 ]
 

@@ -1,10 +1,16 @@
 {% extends "registration/registration_base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Mensaje de activación enviado" %}{% endblock %}
 
 {% block content %}
-<p>{% trans "Por favor revise su correo elctrónico para completar el proceso de registro." %}</p>
+
+    <div class="col-sm-6 col-sm-offset-3">
+         <h3>{% trans "Mensaje de ctivación enviado" %}</h3>
+         <p>{% trans "Por favor revise su correo elctrónico para completar el proceso de registro." %}</p>
+
+     </div>
+
+
 {% endblock %}
 
 

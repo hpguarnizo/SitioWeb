@@ -7,35 +7,41 @@
         <div id="rtitle">Perfil</div><br />
 
         <p>
+            <form enctype="multipart/form-data" action="" method="POST"> {% csrf_token %}
 
-                {% if object.imagen_avatar %}
-                    <p><img border="0" alt="Profile Pic" src="{{ object.imagen_avatar }}" /></p>
+                {% if perfilusuario.imagen_avatar %}
+                    <p><img border="0" alt="Profile Pic" src="{{ perfilusuario.imagen_avatar }}" /></p>
                 {% endif %}
+
+                {{ form.avatar}}
+                <input class="btn btn-primary" type="submit" value="Confirmar" id="submit" />
+            </form>
         </p>
 
         <p>
-            Nombre de usuario: {{ object.user.username }}
+            Nombre de usuario: {{ perfilusuario.user.username }}
         </p>
 
          <p>
-            Correo electrónico: {{ object.user.email }}
+            Correo electrónico: {{ perfilusuario.user.email }}
         </p>
 
          <p>
-            Fecha de registro: {{ object.user.date_joined}}
+            Fecha de registro: {{ perfilusuario.user.date_joined}}
         </p>
 
         <p>
-            Última actualización: {{ object.actualizacion}}
+            Última actualización: {{ perfilusuario.actualizacion}}
         </p>
          <p>
-            Última inicio de sesión: {{ object.user.last_login }}
+            Última inicio de sesión: {{ perfilusuario.user.last_login }}
         </p>
 
         <p>
 
-           <form class="navbar-form nav-tabs-justified" method="get" action="{% url 'editar_perfil' object.user.id %}">
-              <input type="submit" class="form-control" value="Editar Perfil" />
+           <form class="navbar-form nav-tabs-justified" method="get" action="{% url 'editar_user' object.user.id %}">
+
+              <input type="submit" class="btn btn-primary" value="Editar Perfil" />
            </form>
 
         </p>

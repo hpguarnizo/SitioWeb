@@ -5,6 +5,7 @@ from.models import *
 from registration.forms import RegistrationFormUniqueEmail
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 
 
@@ -47,6 +48,12 @@ class FormPerfil(ModelForm):
         exclude = ["mensajes", "user"]
 
 
+class FormForo(ModelForm):
+    class Meta:
+        model   = Foro
+        fields= ['titulo']
+
+
 
 class RegistrationForm(RegistrationFormUniqueEmail):
 
@@ -77,6 +84,7 @@ class RegistrationForm(RegistrationFormUniqueEmail):
                             label="Repita su contraseña:",error_messages=error_password2)
 
 
+
 class FormularioAutenticacion(AuthenticationForm):
 
     username = forms.RegexField(regex=r'^\w+$', max_length=30,
@@ -92,5 +100,43 @@ class FormularioAutenticacion(AuthenticationForm):
         'inactive': "Esta cuenta está inactiva.",
     }
 
+
+
+class EditUserForm(forms.ModelForm):
+
+     error_firstname={
+        'invalid':'Solo puede contener letras y espacios',
+
+      }
+
+     class Meta:
+        model = User
+        fields = 'username','email','first_name','last_name'
+
+
+     username = forms.RegexField(regex=r'^\w+$', max_length=30,
+                            widget=forms.TextInput(),
+                            label="Nombre de usuario",
+                            error_messages=error_username)
+
+     email = forms.EmailField(widget=forms.TextInput(attrs=dict(maxlength=75)),
+                             label="Correo electrónico",error_messages={'invalid':'Ingrese una dirección de corro electrónico válida'})
+
+
+     first_name = forms.RegexField(regex=r'^[a-zA-Z\s]*$', max_length=30,
+                            widget=forms.TextInput(),
+                            label="Nombres",
+                            error_messages=error_firstname)
+
+     last_name = forms.RegexField(regex=r'^[a-zA-Z\s]*$', max_length=30,
+                            widget=forms.TextInput(),
+                            label="Apellidos",
+                            error_messages=error_firstname)
+
+     def clean_email(self):
+       email = self.cleaned_data['email']
+       if User.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+          raise forms.ValidationError("Esta dirección de correo está en uso")
+       return email
 
 

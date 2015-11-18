@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import PerfilUsuario
-from .forms import FormPerfil
+from .forms import *
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
@@ -14,7 +14,8 @@ class PerfilAdmin(admin.ModelAdmin):
     form=FormPerfil
 
 
-
+class ForoAdmin(admin.ModelAdmin):
+    form=FormForo
 
 def create_user_profile(sender, **kwargs):
     #Crear perfil cuando creamos usuario
@@ -24,4 +25,5 @@ def create_user_profile(sender, **kwargs):
 
 #Agregar a la vista de administración
 admin.site.register(PerfilUsuario,PerfilAdmin)
+admin.site.register(Foro,ForoAdmin)
 post_save.connect(create_user_profile, sender=User)

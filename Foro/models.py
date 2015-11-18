@@ -1,7 +1,7 @@
 from django.db.models import *
 from django.contrib.auth.models import User
 from django.conf import settings
-
+from Foro.util import reverse2
 
 
 class Foro(Model):
@@ -12,6 +12,9 @@ class Foro(Model):
     #a voluntad del programador :v
     def __str__(self):
         return self.titulo
+
+    def get_absolute_url(self):
+        return reverse2("foro", dpk=self.pk)
 
     def num_mensajes(self):
         #Suma el número de mensajes en cada tema
@@ -43,6 +46,9 @@ class Tema(Model):
     def __str__(self):
         #Realiza una substitución en el String
         return str("%s - %s " % (self.autor,self.titulo))
+
+    def get_absolute_url(self):
+        return reverse2("tema", dpk=self.pk)
 
     def ultimo_mensaje(self):
         #Si hay mensajes---
