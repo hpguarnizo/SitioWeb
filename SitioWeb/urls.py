@@ -16,14 +16,19 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from Foro.forms import RegistrationForm,FormularioAutenticacion
-
-
-
 from registration.backends.default.views import RegistrationView
+from django.contrib.auth.decorators import login_required as LR
+from Foro.views import EditarPerfil,DetalleUsuario
+from django.conf.urls.static import  static
+from SitioWeb.settings import MEDIA_URL,MEDIA_ROOT
+
+
+
 
 
 urlpatterns = [
 
+     url(r'^$', 'Foro.views.home', name='home'),
      url(r'^accounts/login/$',
         'django.contrib.auth.views.login',
         name='auth_login',
@@ -34,9 +39,11 @@ urlpatterns = [
         RegistrationView.as_view(form_class = RegistrationForm),
         name = 'registration_register'),
 
-    url(r'^$','Foro.views.home',name='home'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/', include('registration.backends.default.urls'))
+    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^editperfil/(?P<pk>\d+)/$' , LR(EditarPerfil.as_view()), {}, name="editar_perfil"),
+    url(r'^perfil/(?P<pk>\d+)/', LR(DetalleUsuario.as_view(template_name='perfil.html')), name="perfil")
 
 ]
 
+urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

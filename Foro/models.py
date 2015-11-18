@@ -90,7 +90,7 @@ class Mensaje(Model):
 
 
 class PerfilUsuario(Model):
-    avatar=ImageField("Foto de perfil",upload_to="/media/",blank=True,null=True)
+    avatar=ImageField("Foto de perfil",upload_to="imagenes/",blank=True,null=True)
     mensajes=IntegerField(default=0)
     #Foreign Key con caracter de unicidad
     user=OneToOneField(User,related_name="perfil")

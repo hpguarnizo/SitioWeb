@@ -7,6 +7,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 
 
+
 attrs_dict = { 'class': 'required' }
 
 error_messages = {
@@ -44,6 +45,7 @@ class FormPerfil(ModelForm):
     class Meta:
         model   = PerfilUsuario
         exclude = ["mensajes", "user"]
+
 
 
 class RegistrationForm(RegistrationFormUniqueEmail):

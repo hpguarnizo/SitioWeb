@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Navbar Template for Bootstrap</title>
+    <title>Sistema Gestor de Foros</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" text="type/css" rel="stylesheet">
@@ -40,33 +40,33 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Foro Inso</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Foro INSO</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Contact</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
-                </ul>
-              </li>
+               {% if request.user.is_authenticated %}
+              <li><a href="{% url 'perfil' request.user.id %}">Bienvenido {{ request.user.username }}</a></li>
+              <li><a href="{% url 'auth_logout' %}?next=/">Cerrar sesión</a></li>
+                {% else %}
+               <li><a href="{% url 'registration_register' %}">Registrarse</a></li>
+              <li><a href="{% url 'auth_login' %}?next={{request.path}}">Iniciar sesión</a></li>
+
+                {% endif %}
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
-            {% if request.user.is_authenticated %}
-              <li><a href="{% url 'auth_logout' %}">Cerrar sesión</a></li>
-                {% else %}
-              <li><a href="{% url 'auth_login' %}?next={{request.path}}">Iniciar sesión</a></li>
-               <li><a href="{% url 'registration_register' %}">Registrarse</a></li>
-                {% endif %}
+
+                <form class="navbar-form navbar-right" method="get" action="http://www.google.com/search">
+                    <div class="form-group">
+                        <input class="form-control input-sm" type="text" name="q" size="31" maxlength="255" value="" />
+                        <input type="submit" class="form-control" value="Buscar" />
+                        <input type="radio" name="sitesearch" value="" /> La web
+                        <input type="radio" name="sitesearch" value="askdavetaylor.com" checked /> En el sitio<br />
+                    </div>
+
+                </form>
+
+
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
