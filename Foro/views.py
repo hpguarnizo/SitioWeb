@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 
+
 # Create your views here.
 def home(request):
     titulo="Bienvenido"
@@ -10,7 +11,6 @@ def home(request):
         "titulo":titulo,
     }
     return render(request, "base.html", contex)
-
 
 
 

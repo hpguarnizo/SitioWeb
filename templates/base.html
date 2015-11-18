@@ -61,9 +61,12 @@
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="registration">Default <span class="sr-only">(current)</span></a></li>
-              <li><a href="../navbar-static-top/">Static top</a></li>
-              <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+            {% if request.user.is_authenticated %}
+              <li><a href="{% url 'auth_logout' %}">Cerrar sesión</a></li>
+                {% else %}
+              <li><a href="{% url 'auth_login' %}?next={{request.path}}">Iniciar sesión</a></li>
+               <li><a href="{% url 'registration_register' %}">Registrarse</a></li>
+                {% endif %}
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
