@@ -4,48 +4,54 @@
 
 {% block content %}
 
-   Fecha en Perú: {%now "m-d-Y" %}
+    Fecha en Perú: {% now "m-d-Y" %}
 
-   <div id="back">
-            <a href="{% url 'home'  %}"> Volver a la lista de foros</a>
-   </div>
+    <div id="back">
+        <a href="{% url 'home' %}"> Volver a la lista de foros</a>
+    </div>
 
-       {% if lista_temas %}
+    {% if lista_temas %}
 
         Foro: {{ foro }}
-       <table  border="1" cellpadding="2"  width="100%">
-             <tr>
-              <td>Título</td>
-              <td>Mensajes</td>
-              <td>Respuesas</td>
-              <td>Último mensaje</td>
-
-             </tr>
-
-       {% for tema in lista_temas %}
+        <table border="1" cellpadding="2" width="100%">
             <tr>
-              <td>
-                 <a href="{% url 'mensajes' tema.pk %}">{{ tema.titulo }}</a><br>
-                  Autor: <a href="{% url 'mensajes' tema.pk %}">{{ tema.autor }}</a><br>
-                  Fecha de publicación: {{ tema.fecha }}
-              </td>
-              <td>{{ tema.num_mensajes }}</td>
+                <td>Título</td>
+                <td>Mensajes</td>
+                <td>Respuesas</td>
+                <td>Último mensaje</td>
 
-                {% if tema.num_mensajes == 0 %}
-                    <td>0</td>
-                {% else %}
-                    <td>{{ tema.num_respuestas }}</td>
-                {% endif %}
+            </tr>
 
-              <td>{{ tema.ultimo_mensaje.short }}</td>
+            {% for tema in lista_temas %}
+                <tr>
+                    <td>
+                        <a href="{% url 'mensajes' tema.pk %}">{{ tema.titulo }}</a><br>
 
-             </tr>
+                        {% if tema.autor.id == request.user.id %}
+                            Autor: <a href="{% url 'editar_perfil' request.user.id %}"> {{ tema.autor }} </a><br>
+                        {% else %}
+                            Autor: <a href="#"> {{ tema.autor }} </a><br>
+                        {% endif %}
 
-       {% endfor %}
-       </table>
-       {% else%}
-          <li>No hay temas abiertos en el foro {{ foro }}</li>
-       {% endif %}
+                        Fecha de publicación: {{ tema.fecha }}
+                    </td>
+                    <td>{{ tema.num_mensajes }}</td>
+
+                    {% if tema.num_mensajes == 0 %}
+                        <td>0</td>
+                    {% else %}
+                        <td>{{ tema.num_respuestas }}</td>
+                    {% endif %}
+
+                    <td>{{ tema.ultimo_mensaje.short }}</td>
+
+                </tr>
+
+            {% endfor %}
+        </table>
+    {% else %}
+        <li>No hay temas abiertos en el foro {{ foro }}</li>
+    {% endif %}
 
 
 

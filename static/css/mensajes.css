@@ -1,0 +1,17 @@
+.celdacontenido{
+    position:relative;
+}
+
+.linkmensaje{
+    position:absolute;
+    bottom:0;
+    right:0;
+}
+
+table a {
+    color: #0b6cff;
+}
+
+table a:hover {
+    color: #08b7ed;
+}

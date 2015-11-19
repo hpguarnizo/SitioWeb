@@ -59,8 +59,8 @@ class Tema(Model):
         # self.mensaje hace alusión a los mensajes que contiene un tema
         if self.mensajes.count():
             # Retorna el último mensaje
-            # Ordena de forma ascendente y toma el primer elemento
-            return self.mensajes.order_by("fecha")[0]
+            # Ordena de forma descendente y toma el primer elemento
+            return self.mensajes.order_by("-fecha")[0]
 
     def num_mensajes(self):
         return self.mensajes.count()
@@ -92,8 +92,8 @@ class Mensaje(Model):
 
     # Método usado para mostrar el último mensaje en el foro
     def short(self):
-        fecha = self.fecha.strftime("%b %d, %I:%M %p")
-        return str("%s -%s\n%s" % (self.autor, self.titulo, fecha))
+        fecha = self.fecha.strftime("%b %d %Y, %I:%M %p")
+        return str("%s - %s\n%s" % (self.autor, self.titulo, fecha))
 
     def profile_data(self):
         p = self.autor.perfil

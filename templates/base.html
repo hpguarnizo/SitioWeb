@@ -17,7 +17,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/navbar.css' %}" text="type/css" rel="stylesheet">
-
+    <link href="{% static 'css/mensajes.css' %}" text="type/css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -47,7 +47,14 @@
                 <ul class="nav navbar-nav">
                     {% if request.user.is_authenticated %}
                         <li>
-                            <a href="{% url 'editar_perfil' request.user.id %}">Bienvenido {{ request.user.username }}</a>
+
+                            {% if request.user.first_name and request.user.last_name %}
+                                 <a href="{% url 'editar_perfil' request.user.id %}">
+                                     Bienvenido {{ request.user.first_name }} {{ request.user.last_name }}</a>
+                            {% else %}
+                                <a href="{% url 'editar_perfil' request.user.id %}">Bienvenido {{ request.user.username }}</a>
+                            {% endif %}
+
                         </li>
                         <li> {% if request.user.is_staff %} <a href="{% url 'admin:index' %}">Admin</a> {% endif %}</li>
 

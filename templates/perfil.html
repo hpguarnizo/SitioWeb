@@ -18,6 +18,16 @@
             </form>
         </p>
 
+         <p>
+
+             {% if perfilusuario.user.first_name and perfilusuario.user.last_name %}
+                 Nombre: {{ perfilusuario.user.first_name }} {{ perfilusuario.user.last_name }}
+             {% else %}
+                 Aún no registra su nombre y apellidos.
+             {% endif %}
+
+         </p>
+
         <p>
             Nombre de usuario: {{ perfilusuario.user.username }}
         </p>
