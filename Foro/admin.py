@@ -17,6 +17,12 @@ class PerfilAdmin(admin.ModelAdmin):
 class ForoAdmin(admin.ModelAdmin):
     form=FormForo
 
+class TemaAdmin(admin.ModelAdmin):
+    form = FormTema
+
+class MensajeAdmin(admin.ModelAdmin):
+    form = FormMensaje
+
 def create_user_profile(sender, **kwargs):
     #Crear perfil cuando creamos usuario
     user = kwargs["instance"]
@@ -26,4 +32,6 @@ def create_user_profile(sender, **kwargs):
 #Agregar a la vista de administración
 admin.site.register(PerfilUsuario,PerfilAdmin)
 admin.site.register(Foro,ForoAdmin)
+admin.site.register(Tema,TemaAdmin)
+admin.site.register(Mensaje,MensajeAdmin)
 post_save.connect(create_user_profile, sender=User)

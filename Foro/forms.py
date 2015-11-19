@@ -53,6 +53,17 @@ class FormForo(ModelForm):
         model   = Foro
         fields= ['titulo']
 
+class FormTema(ModelForm):
+    class Meta:
+        model   = Tema
+        fields= "titulo autor foro".split()
+
+
+class FormMensaje(ModelForm):
+    class Meta:
+        model   = Mensaje
+        fields= "titulo tema autor contenido apropiado".split()
+
 
 
 class RegistrationForm(RegistrationFormUniqueEmail):

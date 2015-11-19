@@ -4,16 +4,40 @@
 
 {% block content %}
 
-    <p>Fecha actual en Perú: {{ fecha }}</p>
+   Fecha en Perú: {%now "m-d-Y" %}
 
    <table  border="1" cellpadding="4" width="100%">
 
-       <tr>
+       {% if object_list %}
+             <p>Lista de foros</p>
+             <tr>
               <td>Título</td>
+              <td>Temas</td>
               <td>Mensajes</td>
               <td>Último mensaje</td>
 
-       </tr>
+             </tr>
+
+       {% for foro in object_list %}
+            <tr>
+              <td><a href="{% url 'temas' foro.pk %}">{{ foro.titulo }}</a></td>
+              <td>{{ foro.num_temas }}</td>
+              <td>{{ foro.num_mensajes }}</td>
+
+               {% if foro.ultimo_mensaje %}
+                    <td>{{ foro.ultimo_mensaje.short }}</td>
+               {% else %}
+                   <td>No hay mensajes</td>
+               {% endif %}
+
+             </tr>
+
+       {% endfor %}
+
+       {% else%}
+          <li>No hay foros registrados</li>
+       {% endif %}
+
 
 
    </table>

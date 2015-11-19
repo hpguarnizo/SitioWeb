@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+
+
+
+    Fecha en Perú: {% now "m-d-Y" %}
+
+    <div id="back">
+        <a href="{% url 'home' %}"> Volver a la lista de foros</a>
+    </div>
+
+    {% if lista_mensajes %}
+        Tema: {{ tema }}
+        <table border="1" cellpadding="2" width="100%">
+
+
+            {% for mensaje in lista_mensajes %}
+                {% with mensaje.profile_data as pdata %}
+                    <tr>
+                        <th>  {{ mensaje.autor }} </th>
+                        <th>  {{ mensaje.titulo }} - {{ mensaje.fecha }}  </th>
+                    </tr>
+
+                    <tr>
+                    <td>
+
+
+                    {% if request.user.is_staff %} Administrador<br>
+                    {% else %}
+                        Miembro<br>
+                    {% endif %}
+
+                    {% if  pdata.1 %}
+                        <img border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/><br>
+                    {% endif %}
+                    Fecha de registro: {{ mensaje.autor.date_joined|date:"M d Y" }} <br>
+                    Número de mensajes: {{ pdata.0 }}
+                {% endwith %}
+            </td>
+            <td>
+                {{ mensaje.contenido }}
+
+            </td>
+
+            </tr>
+
+            {% endfor %}
+        </table>
+    {% else %}
+        <li>No hay mensajes publicados en este tema {{ tema }}</li>
+    {% endif %}
+
+
+
+
+
+
+{% endblock %}

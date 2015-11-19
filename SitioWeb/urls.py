@@ -28,7 +28,11 @@ from Foro.security import anonymous_required as AR
 
 urlpatterns = [
 
-     url(r'^$', 'Foro.views.home', name='home'),
+     url(r'^$', HomeForo.as_view(), name='home'),
+
+     url(r'^temas/(?P<pk>\d+)/$',ListaTemas.as_view(),name="temas"),
+     url(r'^mensajes/(?P<pk>\d+)/$',ListaMensajes.as_view(),name="mensajes"),
+
      url(r'^accounts/login/$',
         AR(login),
         name='auth_login',

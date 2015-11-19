@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+
+   Fecha en Perú: {%now "m-d-Y" %}
+
+   <div id="back">
+            <a href="{% url 'home'  %}"> Volver a la lista de foros</a>
+   </div>
+
+       {% if lista_temas %}
+
+        Foro: {{ foro }}
+       <table  border="1" cellpadding="2"  width="100%">
+             <tr>
+              <td>Título</td>
+              <td>Mensajes</td>
+              <td>Respuesas</td>
+              <td>Último mensaje</td>
+
+             </tr>
+
+       {% for tema in lista_temas %}
+            <tr>
+              <td>
+                 <a href="{% url 'mensajes' tema.pk %}">{{ tema.titulo }}</a><br>
+                  Autor: <a href="{% url 'mensajes' tema.pk %}">{{ tema.autor }}</a><br>
+                  Fecha de publicación: {{ tema.fecha }}
+              </td>
+              <td>{{ tema.num_mensajes }}</td>
+
+                {% if tema.num_mensajes == 0 %}
+                    <td>0</td>
+                {% else %}
+                    <td>{{ tema.num_respuestas }}</td>
+                {% endif %}
+
+              <td>{{ tema.ultimo_mensaje.short }}</td>
+
+             </tr>
+
+       {% endfor %}
+       </table>
+       {% else%}
+          <li>No hay temas abiertos en el foro {{ foro }}</li>
+       {% endif %}
+
+
+
+
+
+
+{% endblock %}
