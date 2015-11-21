@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+
+
+
+    Fecha en Perú: {% now "m-d-Y" %}
+
+    <div >
+        <a href="{% url 'home' %}">Foros</a> > <a href="{% url 'temas' tema.foro.id %}">{{ tema.foro.titulo }}</a> > {{ tema.titulo }}
+    </div>
+
+    {% if object_list %}
+        {% if tema.autor.id == request.user.id %}
+            Tema: {{ tema.titulo }} - {{ tema.fecha|date:"M-d-Y" }}
+            - Autor: <a href="{% url 'editar_perfil' request.user.id %}">{{ tema.autor }} </a>
+        {% else %}
+            Tema: {{ tema.titulo }} - {{ tema.fecha|date:"M-d-Y" }}
+            - Autor: <a href="#">{{ tema.autor }} </a>
+        {% endif %}
+        <br><br>
+        {% for mensaje in object_list %}
+
+            <div id="no-more-tables">
+
+            <table style='table-layout:fixed;width:100%' class="col-md-12 table-bordered table-striped table-condensed cf">
+
+                <thead class="cf">
+                {% with mensaje.profile_data as pdata %}
+                    <tr>
+
+                        <th style='width: 15%;'>
+                            Autor
+
+                        </th>
+                        <th class="celdacontenido" style='width: 85%;'>
+                            {{ mensaje.fecha }}
+
+                            {% if  request.user.id == mensaje.autor.id and mensaje.apropiado == 1 %}
+                                <a href="#" class="apropiado">Inapropiado</a>
+                            {% elif request.user.id == mensaje.autor.id and mensaje.apropiado == 0 %}
+                                <a href="#" class="apropiado">Apropiado</a>
+                            {% endif %}
+
+                        </th>
+                    </tr>
+                    </thead>
+                  	<tbody>
+                    <tr>
+                    <td data-title='Autor'>
+                            {% if mensaje.autor.id == request.user.id %}
+                                <a href="{% url 'editar_perfil' request.user.id %}"> {{ mensaje.autor }} </a><br>
+                            {% else %}
+                                <a href="#"> {{ mensaje.autor }} </a><br>
+                            {% endif %}
+
+                    {% if request.user.is_staff %} Administrador<br>
+                    {% else %}
+                        Miembro<br>
+                    {% endif %}
+
+                    {% if  pdata.1 %}
+                        <img border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/><br>
+                    {% endif %}
+                    Fecha de registro: <br> {{ mensaje.autor.date_joined|date:"M-d-Y" }} <br>
+                    Número de mensajes: {{ pdata.0 }}
+                {% endwith %}
+                </td>
+                <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
+                    {{ mensaje.contenido }}<br>
+                    <a class="citar" href="#">Citar</a>
+                </td>
+
+                </tr>
+
+            	</tbody>
+            </table>
+            </div> <br>
+        {% endfor %}
+        {% include "paginador.html" %}
+    {% else %}
+        <li>No hay mensajes publicados en este tema {{ tema }}</li>
+    {% endif %}
+
+
+
+
+
+{% endblock %}

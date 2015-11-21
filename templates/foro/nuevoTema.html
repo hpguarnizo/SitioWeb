@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+    <h4>Nuevo tema en el foro {{ foro.titulo }}</h4>
+
+    <form method="post" action="{% url 'crear_tema' %}">
+        {% csrf_token %}
+        <label for="tema">Título del tema:</label><br>
+        <input id="tema" type="text" name="tema"  required/> <br>
+        <label for="mensaje">Mensaje:</label><br>
+        <textarea id="mensaje" name="mensaje" rows="20" cols="95" required></textarea> <br>
+        <input type="hidden" name="foro" value="{{ foro }}"/>
+        <input type="submit" name="confirmar" value="Confirmar"/>
+
+    </form>
+
+
+
+{% endblock %}

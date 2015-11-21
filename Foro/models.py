@@ -6,13 +6,15 @@ from Foro.util import reverse2
 
 class Foro(Model):
     titulo = CharField(max_length=60)
+    descripcion = CharField(max_length=250)
+    estado = BooleanField(default=1)
 
     # Nombre con el que figura en el sitio de administración
     # Es similar al metodo toString() de Java
     # Los métodos de la forma __xx__ son llamados por Python y no
     # a voluntad del programador :v
     def __str__(self):
-        return self.titulo
+        return str(self.id)
 
     def get_absolute_url(self):
         return reverse2("temas", pk=self.pk)
@@ -40,6 +42,7 @@ class Tema(Model):
     fecha = DateTimeField(auto_now_add=True)
     autor = ForeignKey(User, blank=True, null=True)
     foro = ForeignKey(Foro, related_name="temas")
+    estado = BooleanField(default=1)
 
     class Meta:
         # Orden descendiente de acuerdo  la fecha
@@ -52,6 +55,9 @@ class Tema(Model):
     def get_absolute_url(self):
         return reverse2("mensajes", pk=self.pk)
 
+    def num_mensajes(self):
+        return self.mensajes.count()
+
     def ultimo_mensaje(self):
         # Si hay mensajes---
         # Mensaje tiene una relación con Tema, esta relación es denominada
@@ -62,16 +68,12 @@ class Tema(Model):
             # Ordena de forma descendente y toma el primer elemento
             return self.mensajes.order_by("-fecha")[0]
 
-    def num_mensajes(self):
-        return self.mensajes.count()
-
     # No se cuenta el mensaje inicial con el que empezó el tema
     def num_respuestas(self):
         return self.mensajes.count() - 1
 
 
 class Mensaje(Model):
-    titulo = CharField(max_length=60)
     fecha = DateTimeField(auto_now_add=True)
     actualizacion = DateTimeField(auto_now=True)
     # El nombre de la relación es usado para referenciar el atributo
@@ -80,20 +82,12 @@ class Mensaje(Model):
     contenido = TextField(max_length=10000)
     # En python True=1
     apropiado = BooleanField(default=1)
-    # Si el mensaje es una respuesta
-    esRespuesta = BooleanField(default=0)
-    respuestaDe = ForeignKey('self', on_delete=CASCADE, null=True, related_name="respuesta")
 
     class Meta:
         ordering = ["fecha"]
 
     def __str__(self):
-        return str("%s - %s - %s" % (self.autor, self.tema, self.titulo))
-
-    # Método usado para mostrar el último mensaje en el foro
-    def short(self):
-        fecha = self.fecha.strftime("%b %d %Y, %I:%M %p")
-        return str("%s - %s\n%s" % (self.autor, self.titulo, fecha))
+        return str("%s - %s " % (self.autor, self.tema))
 
     def profile_data(self):
         p = self.autor.perfil

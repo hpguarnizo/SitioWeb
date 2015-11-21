@@ -1,12 +1,21 @@
+
 .celdacontenido{
     position:relative;
 }
 
-.linkmensaje{
+.citar{
     position:absolute;
     bottom:0;
     right:0;
 }
+
+.apropiado {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+
 
 table a {
     color: #0b6cff;

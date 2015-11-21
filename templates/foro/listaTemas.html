@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+
+    Fecha en Perú: {% now "m-d-Y" %}
+
+    <div>
+        <a href="{% url 'home' %}">Foros</a> > {{ foro.titulo }}
+    </div>
+    <a href="{% url 'nuevo_tema' foro.id %}">Crear nuevo tema</a>
+    {% if object_list %}
+
+
+        <div id="no-more-tables">
+            <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                <thead class="cf">
+                <tr>
+                    <td>Tema</td>
+                    <td>Respuestas</td>
+                    <td>Último mensaje</td>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for tema in object_list %}
+                    <tr>
+                        <td data-title='Tema'>
+                            <a href="{% url 'mensajes' tema.pk %}">{{ tema.titulo }}</a><br>
+
+                            {% if tema.autor.id == request.user.id %}
+                                Autor: <a href="{% url 'editar_perfil' request.user.id %}"> {{ tema.autor }} </a><br>
+                            {% else %}
+                                Autor: <a href="#"> {{ tema.autor }} </a><br>
+                            {% endif %}
+
+                            Fecha de publicación: {{ tema.fecha|date:"M, d-Y, h:i a" }}
+                        </td>
+
+
+                        {% if tema.num_mensajes == 0 %}
+                            <td data-title='Respuestas'>0</td>
+                        {% else %}
+                            <td data-title='Respuestas'>{{ tema.num_respuestas }}</td>
+                        {% endif %}
+
+                        <td data-title='Último mensaje'>
+                            {{ tema.ultimo_mensaje.fecha|date:"M, d-Y, h:i a" }} <br>
+
+                            {% if tema.ultimo_mensaje.autor.id == request.user.id %}
+                                Por:
+                                <a href="{% url 'editar_perfil' request.user.id %}"> {{ tema.ultimo_mensaje.autor }} </a>
+                            {% else %}
+                                Por: <a href="#"> {{ tema.ultimo_mensaje.autor }} </a>
+                            {% endif %}
+
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% include "paginador.html" %}
+    {% else %}
+        <li>No hay temas abiertos en el foro {{ foro.titulo }}</li>
+    {% endif %}
+
+
+
+
+
+
+{% endblock %}

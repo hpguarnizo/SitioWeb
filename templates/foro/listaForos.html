@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+
+    Fecha en Perú: {% now "m-d-Y" %}
+
+    {% if object_list %}
+        <p>Foros</p>
+        <div id="no-more-tables">
+            <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                <thead class="cf">
+                <tr>
+                    <td>Título</td>
+                    <td>Temas</td>
+                    <td>Mensajes</td>
+                    <td>Último mensaje</td>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for foro in object_list %}
+                    <tr>
+                        <td data-title='Título'>
+                            <a href="{% url 'temas' foro.pk %}">{{ foro.titulo }}</a><br>
+                            {{ foro.descripcion }}
+                        </td>
+                        <td data-title='Temas'>{{ foro.num_temas }}</td>
+                        <td data-title='Mensajes'>{{ foro.num_mensajes }}</td>
+
+                        {% if foro.ultimo_mensaje %}
+                            <td data-title='Último mensaje'>
+                                {{ foro.ultimo_mensaje.fecha|date:"M, d-Y, h:i a" }} <br>
+                                {% if foro.ultimo_mensaje.autor.id == request.user.id %}
+                                    Por: <a href="{% url 'editar_perfil' request.user.id %}"> {{ foro.ultimo_mensaje.autor }} </a>
+                                {% else %}
+                                    Por: <a href="#"> {{ foro.ultimo_mensaje.autor }} </a>
+                                {% endif %}
+
+                            </td>
+                        {% else %}
+                            <td data-title='Último mensaje'>No hay mensajes</td>
+                        {% endif %}
+
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        </div>
+        {% include "paginador.html" %}
+    {% else %}
+        <li>No hay foros registrados</li>
+    {% endif %}
+
+
+
+
+{% endblock %}

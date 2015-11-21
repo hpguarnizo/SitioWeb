@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.edit import UpdateView
 from Foro.forms import *
 from PIL import Image as PImage
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -12,35 +13,39 @@ from SitioWeb.settings import MEDIA_URL
 # Create your views here.
 
 class HomeForo(ListView):
-    model = Foro
-    template_name = "listaForos.html"
-    paginate_by = 20
+    queryset =Foro.objects.filter(estado=1)
+    template_name = "foro/listaForos.html"
+    paginate_by = 15
 
-    def get_queryset(self):
-        return Foro.objects.all()
 
 
 class ListaTemas(ListView):
     model = Tema
-    template_name = "listaTemas.html"
-    paginate_by = 20
+    template_name = "foro/listaTemas.html"
+    paginate_by = 15
+
+
+    def get_queryset(self,**kwargs):
+        return Tema.objects.filter(foro=self.kwargs.get('pk'), estado=1)
 
     def get_context_data(self, **kwargs):
         context = super(ListaTemas, self).get_context_data()
-        context['foro'] = Foro.objects.filter(id=self.kwargs.get('pk'))[0]
-        context['lista_temas'] = Tema.objects.filter(foro=self.kwargs.get('pk'))
+        context['foro'] = Foro.objects.filter(id=self.kwargs.get('pk'),estado=1)[0]
         return context
 
 
 class ListaMensajes(ListView):
-    model = Mensaje
-    template_name = "listaMensajes.html"
-    paginate_by = 20
+    Model=Mensaje
+    template_name = "foro/listaMensajes.html"
+    paginate_by = 15
+
+
+    def get_queryset(self,**kwargs):
+        return Mensaje.objects.filter(tema=self.kwargs.get('pk'))
 
     def get_context_data(self, **kwargs):
         context = super(ListaMensajes, self).get_context_data()
         context['tema'] = Tema.objects.filter(id=self.kwargs.get('pk'))[0]
-        context['lista_mensajes'] = Mensaje.objects.filter(tema=self.kwargs.get('pk'))
         context['media_url'] = MEDIA_URL
         return context
 
@@ -53,7 +58,7 @@ class EditarPerfil(UpdateView):
     model = PerfilUsuario
     form_class = FormPerfil
     success_url = "#"
-    template_name = "perfil.html"
+    template_name = "foro/perfil.html"
 
     def form_valid(self, form):
         """Resize and save profile image."""
@@ -79,7 +84,27 @@ class EditarPerfil(UpdateView):
 class EditarUsuario(UpdateView):
     model = User
     form_class = EditUserForm
-    template_name = "editarUsuario.html"
+    template_name = "foro/editarUsuario.html"
 
     def get_success_url(self):
         return reverse_lazy('editar_perfil', args=(self.object.id,))
+
+
+def NuevoTema(request,**kwargs):
+    pk=kwargs.get("pk")
+    foro=Foro.objects.filter(id=pk)[0]
+    context={"foro":foro}
+    return render(request,"foro/nuevoTema.html",context)
+
+
+def CrearTema(request):
+    p=request.POST
+    if p["tema"] and p["mensaje"]:
+        foro=Foro.objects.filter(id=p["foro"])[0]
+        tema=Tema.objects.create(titulo=p["tema"], foro=foro,autor=request.user)
+        Mensaje.objects.create(tema=tema,autor=request.user,contenido=p["mensaje"])
+        request.user.perfil.incrementar_mensaje()
+        return redirect('mensajes', pk=tema.id)
+    else:
+        return redirect('home')
+

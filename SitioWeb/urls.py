@@ -19,35 +19,28 @@ from django.contrib.auth.views import login
 from registration.backends.default.views import RegistrationView
 from django.contrib.auth.decorators import login_required as LR
 from Foro.views import *
-from django.conf.urls.static import  static
-from SitioWeb.settings import MEDIA_URL,MEDIA_ROOT
+from django.conf.urls.static import static
+from SitioWeb.settings import MEDIA_URL, MEDIA_ROOT
 from Foro.security import anonymous_required as AR
-
-
-
 
 urlpatterns = [
 
-     url(r'^$', HomeForo.as_view(), name='home'),
+    url(r'^$', HomeForo.as_view(), name='home'),
+    url(r'^nuevotema/(?P<pk>\d+)/$', LR(NuevoTema), name='nuevo_tema'),
+    url(r'^creartema/$', LR(CrearTema), name='crear_tema'),
+    url(r'^temas/(?P<pk>\d+)/$', ListaTemas.as_view(), name="temas"),
+    url(r'^mensajes/(?P<pk>\d+)/$', ListaMensajes.as_view(), name="mensajes"),
 
-     url(r'^temas/(?P<pk>\d+)/$',ListaTemas.as_view(),name="temas"),
-     url(r'^mensajes/(?P<pk>\d+)/$',ListaMensajes.as_view(),name="mensajes"),
-
-     url(r'^accounts/login/$',
-        AR(login),
-        name='auth_login',
-        kwargs={'authentication_form':FormularioAutenticacion }
-    ),
+    url(r'^accounts/login/$', AR(login), name='auth_login', ),
 
     url(r'accounts/register/$',
-        AR(RegistrationView.as_view(form_class = RegistrationForm)),
-        name = 'registration_register') ,
+        AR(RegistrationView.as_view(form_class=RegistrationForm)),
+        name='registration_register'),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('registration.backends.default.urls')),
-    url(r'^editperfil/(?P<pk>\d+)/$' , LR(EditarPerfil.as_view()), {}, name="editar_perfil"),
-     url(r'^edituser/(?P<pk>\d+)/$' , LR(EditarUsuario.as_view()), {}, name="editar_user"),
-
+    url(r'^editperfil/(?P<pk>\d+)/$', LR(EditarPerfil.as_view()), {}, name="editar_perfil"),
+    url(r'^edituser/(?P<pk>\d+)/$', LR(EditarUsuario.as_view()), {}, name="editar_user"),
 
 ]
 
