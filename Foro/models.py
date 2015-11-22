@@ -50,7 +50,7 @@ class Tema(Model):
 
     def __str__(self):
         # Realiza una substitución en el String
-        return str("%s - %s " % (self.autor, self.titulo))
+        return str(self.id)
 
     def get_absolute_url(self):
         return reverse2("mensajes", pk=self.pk)

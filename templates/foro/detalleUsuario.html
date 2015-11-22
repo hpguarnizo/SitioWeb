@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+    <div class="main">
+        <div id="rtitle">Perfil</div>
+        <br/>
+
+
+                {% if object.imagen_avatar %}
+                    <p><img border="0" alt="Profile Pic" src="{{ object.imagen_avatar }}"/></p>
+                {% else %}
+                    <p><img border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/></p>
+                {% endif %}
+
+
+        <p>
+
+            {% if object.user.first_name and object.user.last_name %}
+                Nombre: {{ object.user.first_name }} {{ object.user.last_name }}
+            {% else %}
+                Aún no registra su nombre y apellidos.
+            {% endif %}
+
+        </p>
+
+        <p>
+            Nombre de usuario: {{ object.user.username }}
+        </p>
+
+        <p>
+            Número de mensajes: {{ object.mensajes }}
+        </p>
+
+        <p>
+            Correo electrónico: {{ object.user.email }}
+        </p>
+
+        <p>
+            Fecha de registro: {{ object.user.date_joined }}
+        </p>
+
+        <p>
+            Última actualización: {{ object.actualizacion }}
+        </p>
+
+        <p>
+            Última inicio de sesión: {{ object.user.last_login }}
+        </p>
+
+        <p>
+            <a href="{% url 'temas_creados' object.user.id %}">Temas creados</a>
+        </p>
+
+
+    </div>
+
+
+
+{% endblock %}

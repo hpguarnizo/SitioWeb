@@ -7,9 +7,17 @@
     Fecha en Perú: {% now "m-d-Y" %}
 
     <div>
-        <a href="{% url 'home' %}">Foros</a> > {{ foro.titulo }}
+
+        {% if usuario.id == request.user.id %}
+            <a href="{% url 'home' %}">Foros</a> > <a href="{% url 'editar_perfil' request.user.id%}">{{ usuario.username }}</a>
+        > Temas creados por {{ usuario.username }}
+        {% else %}
+            <a href="{% url 'home' %}">Foros</a> > <a href="{% url 'detalle_usuario' usuario.id%}">{{ usuario.username }}</a>
+        > Temas creados por {{ usuario.username }}
+        {% endif %}
+
     </div>
-    <a href="{% url 'nuevo_tema' foro.id %}">Crear nuevo tema</a>
+
     {% if object_list %}
 
 
@@ -18,6 +26,7 @@
                 <thead class="cf">
                 <tr>
                     <td>Tema</td>
+                    <td>Foro</td>
                     <td>Respuestas</td>
                     <td>Último mensaje</td>
 
@@ -28,16 +37,11 @@
                     <tr>
                         <td data-title='Tema'>
                             <a href="{% url 'mensajes' tema.pk %}">{{ tema.titulo }}</a><br>
-
-                            {% if tema.autor.id == request.user.id %}
-                                Autor: <a href="{% url 'editar_perfil' request.user.id %}"> {{ tema.autor }} </a><br>
-                            {% else %}
-                                Autor: <a href="{% url 'detalle_usuario' tema.autor.id %}"> {{ tema.autor }} </a><br>
-                            {% endif %}
-
                             Fecha de publicación: {{ tema.fecha|date:"M, d-Y, h:i a" }}
                         </td>
-
+                        <td data-title="Foro">
+                           <a href="{% url 'temas' tema.foro.id %}">{{ tema.foro.titulo }}</a>
+                        </td>
 
                         {% if tema.num_mensajes == 0 %}
                             <td data-title='Respuestas'>0</td>
@@ -66,7 +70,7 @@
         </div>
         {% include "paginador.html" %}
     {% else %}
-        <li>No hay temas abiertos en el foro {{ foro.titulo }}</li>
+        <li>El usuario no ha creado ningún tema</li>
     {% endif %}
 
 

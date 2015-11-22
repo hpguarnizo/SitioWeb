@@ -52,6 +52,36 @@ class ListaMensajes(ListView):
 
 class DetalleUsuario(DetailView):
     model = PerfilUsuario
+    template_name = "foro/detalleUsuario.html"
+
+class ListaTemasUsuario(ListView):
+     model = Tema
+     template_name = "foro/temasPorUsuario.html"
+     paginate_by = 15
+
+
+     def get_queryset(self,**kwargs):
+        return Tema.objects.filter(autor=self.kwargs.get('pk'), estado=1)
+
+     def get_context_data(self, **kwargs):
+        context = super(ListaTemasUsuario, self).get_context_data()
+        context['usuario'] = User.objects.filter(id=self.kwargs.get('pk'))[0]
+        return context
+
+
+class ListaMensajesUsuario(ListView):
+     model = Mensaje
+     template_name = "foro/mensajesPorUsuario.html"
+     paginate_by = 15
+
+
+     def get_queryset(self,**kwargs):
+        return Mensaje.objects.filter(autor=self.kwargs.get('pk'))
+
+     def get_context_data(self, **kwargs):
+        context = super(ListaMensajesUsuario, self).get_context_data()
+        context['usuario'] = User.objects.filter(id=self.kwargs.get('pk'))[0]
+        return context
 
 
 class EditarPerfil(UpdateView):
@@ -108,3 +138,19 @@ def CrearTema(request):
     else:
         return redirect('home')
 
+
+def NuevoMensaje(request,**kwargs):
+    pk=kwargs.get("pk")
+    tema=Tema.objects.filter(id=pk, estado=1)[0]
+    context={"tema":tema}
+    return render(request,"foro/nuevoMensaje.html",context)
+
+def CrearMensaje(request):
+    p=request.POST
+    if p["mensaje"]:
+        tema=Tema.objects.filter(id=p["tema"],estado=1)[0]
+        Mensaje.objects.create(tema=tema,autor=request.user,contenido=p["mensaje"])
+        request.user.perfil.incrementar_mensaje()
+        return redirect('mensajes', pk=tema.id)
+    else:
+        return redirect('home')

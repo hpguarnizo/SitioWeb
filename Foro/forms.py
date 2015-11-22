@@ -84,7 +84,7 @@ class EditUserForm(forms.ModelForm):
 
      username = forms.RegexField(regex=r'^\w+$', max_length=30,
                             widget=forms.TextInput(),
-                            label="Nombre de usuario",
+                                 label="Nombre de usuario",
                             error_messages=error_username)
 
      email = forms.EmailField(widget=forms.TextInput(attrs=dict(maxlength=75)),

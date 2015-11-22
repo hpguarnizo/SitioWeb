@@ -60,7 +60,7 @@
                         </li>
                         <li> {% if request.user.is_staff %} <a href="{% url 'admin:index' %}">Admin</a> {% endif %}</li>
 
-                        <li><a href="{% url 'auth_logout' %}?next=/">Cerrar sesión</a></li>
+                        <li><a href="{% url 'auth_logout' %}?next={% url 'home' %}">Cerrar sesión</a></li>
                     {% else %}
                         <li><a href="{% url 'registration_register' %}">Registrarse</a></li>
                         <li><a href="{% url 'auth_login' %}?next={{ request.path }}">Iniciar sesión</a></li>

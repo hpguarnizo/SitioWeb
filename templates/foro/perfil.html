@@ -12,6 +12,8 @@
 
                 {% if perfilusuario.imagen_avatar %}
                     <p><img border="0" alt="Profile Pic" src="{{ perfilusuario.imagen_avatar }}"/></p>
+                {% else %}
+                    <p><img border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/></p>
                 {% endif %}
 
         {{ form.avatar }}
@@ -51,6 +53,10 @@
 
         <p>
             Última inicio de sesión: {{ perfilusuario.user.last_login }}
+        </p>
+
+        <p>
+            <a href="{% url 'temas_creados' perfilusuario.user.id %}">Temas creados</a>
         </p>
 
         <p>

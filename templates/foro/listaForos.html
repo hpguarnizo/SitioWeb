@@ -35,8 +35,10 @@
                                 {{ foro.ultimo_mensaje.fecha|date:"M, d-Y, h:i a" }} <br>
                                 {% if foro.ultimo_mensaje.autor.id == request.user.id %}
                                     Por: <a href="{% url 'editar_perfil' request.user.id %}"> {{ foro.ultimo_mensaje.autor }} </a>
+                                {% elif request.user.is_authenticated%}
+                                    Por: <a href="{% url 'detalle_usuario' foro.autor.id %}"> {{ foro.ultimo_mensaje.autor }} </a>
                                 {% else %}
-                                    Por: <a href="#"> {{ foro.ultimo_mensaje.autor }} </a>
+                                    Por: <a href="{% url 'auth_login' %}?next={{ request.path }}"> {{ foro.ultimo_mensaje.autor }} </a>
                                 {% endif %}
 
                             </td>

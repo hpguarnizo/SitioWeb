@@ -30,9 +30,11 @@ urlpatterns = [
     url(r'^creartema/$', LR(CrearTema), name='crear_tema'),
     url(r'^temas/(?P<pk>\d+)/$', ListaTemas.as_view(), name="temas"),
     url(r'^mensajes/(?P<pk>\d+)/$', ListaMensajes.as_view(), name="mensajes"),
-
+    url(r'^nuevomensaje/(?P<pk>\d)/$',LR(NuevoMensaje), name="nuevo_mensaje"),
+    url(r'^crearmensaje/$',LR(CrearMensaje), name="crear_mensaje"),
+    url(r'^usuario/(?P<pk>\d+)/', LR(DetalleUsuario.as_view()), name="detalle_usuario"),
     url(r'^accounts/login/$', AR(login), name='auth_login', ),
-
+    url(r'^temascreados/(?P<pk>\d+)/', LR(ListaTemasUsuario.as_view()), name="temas_creados"),
     url(r'accounts/register/$',
         AR(RegistrationView.as_view(form_class=RegistrationForm)),
         name='registration_register'),
