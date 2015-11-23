@@ -58,7 +58,7 @@
                 {% endif %}
 
                 {% if  pdata.1 %}
-                    <img border="0" alt="Profile Pic" src="/media/{{ pdata.1 }}"/><br>
+                    <img border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/><br>
                 {% else %}
                     <img border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/><br>
                 {% endif %}

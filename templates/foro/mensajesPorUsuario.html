@@ -58,9 +58,9 @@
                     {% endif %}
 
                     {% if  pdata.1 %}
-                        <img border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/><br>
+                        <img class="img-rounded" border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/><br>
                     {% else %}
-                       <img border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/><br>
+                       <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/><br>
                     {% endif %}
 
                     Fecha de registro: <br> {{ mensaje.autor.date_joined|date:"M-d-Y" }} <br>

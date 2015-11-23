@@ -2,79 +2,93 @@
 {% block title %}Perfil{% endblock %}
 
 {% block content %}
+    <div class="container-fluid">
 
-    <div class="main">
-        <div id="rtitle">Perfil</div>
-        <br/>
+        <div class="row">
+            <div class="col-sm-5 ">
+                <br/>
+                <b>Imagen de perfil</b><br><br>
 
-        <p>
-            <form enctype="multipart/form-data" action="" method="POST"> {% csrf_token %}
+                <form enctype="multipart/form-data" action="" method="POST"> {% csrf_token %}
 
-                {% if perfilusuario.imagen_avatar %}
-                    <p><img border="0" alt="Profile Pic" src="{{ perfilusuario.imagen_avatar }}"/></p>
+                    {% if perfilusuario.imagen_avatar %}
+                        <img class="img-rounded" border="0" alt="Profile Pic" src="{{ perfilusuario.imagen_avatar }}"/>
+                        <br><br>
+                    {% else %}
+                        <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png"
+                             height="140" width="140"/>
+                        <br>
+                        <br>
+                    {% endif %}
+
+                    {{ form.avatar }} <br>
+                    <input class="btn btn-primary " type="submit" value="Confirmar" id="submit"/>
+                </form>
+                <br>
+            </div>
+
+            <div class="col-sm-7">
+                <br>
+                <b>Información personal</b><br><br>
+
+                {% if perfilusuario.user.first_name and perfilusuario.user.last_name %}
+                    Nombre:
+                    <div class="informacion">{{ perfilusuario.user.first_name }} {{ perfilusuario.user.last_name }} <br>
+                    </div>
                 {% else %}
-                    <p><img border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/></p>
+                    <div class="informacion">
+                        Aún no registra su nombre y apellidos. <br>
+                    </div>
                 {% endif %}
 
-        {{ form.avatar }}
-        <input class="btn btn-primary" type="submit" value="Confirmar" id="submit"/>
-        </form>
-        </p>
+                Correo electrónico:
+                <div class="informacion">
+                    {{ perfilusuario.user.email }} <br>
+                </div>
 
-        <p>
+                Nombre de usuario:
+                <div class="informacion">
+                    {{ perfilusuario.user.username }} <br><br>
+                </div>
 
-            {% if perfilusuario.user.first_name and perfilusuario.user.last_name %}
-                Nombre: {{ perfilusuario.user.first_name }} {{ perfilusuario.user.last_name }}
-            {% else %}
-                Aún no registra su nombre y apellidos.
-            {% endif %}
+                <b>Actividad</b><br><br>
 
-        </p>
+                Número de mensajes:
+                <div class="informacion">
+                    {{ perfilusuario.mensajes }} <br>
+                </div>
+                <a href="{% url 'temas_creados' perfilusuario.user.id %}">Temas creados</a> <br>
 
-        <p>
-            Nombre de usuario: {{ perfilusuario.user.username }}
-        </p>
+                <a href="{% url 'mensajes_creados' perfilusuario.user.id %}">Mensajes creados</a> <br>
 
-        <p>
-            Número de mensajes: {{ perfilusuario.mensajes }}
-        </p>
+                Fecha de registro:
+                <div class="informacion">
+                    {{ perfilusuario.user.date_joined|date:"M, d-Y, h:i a" }} <br>
+                </div>
 
-        <p>
-            Correo electrónico: {{ perfilusuario.user.email }}
-        </p>
+                Última actualización:
+                <div class="informacion">
+                    {{ perfilusuario.actualizacion|date:"M, d-Y, h:i a" }} <br>
+                </div>
+                Última inicio de sesión:
+                <div class="informacion">
+                    {{ perfilusuario.user.last_login|date:"M, d-Y, h:i a" }} <br>
+                </div>
 
-        <p>
-            Fecha de registro: {{ perfilusuario.user.date_joined|date:"M, d-Y, h:i a" }}
-        </p>
+                <div class="btn-group">
 
-        <p>
-            Última actualización: {{ perfilusuario.actualizacion|date:"M, d-Y, h:i a" }}
-        </p>
+                <form class="navbar-form nav-tabs-justified" method="get"
+                      action="{% url 'editar_user' object.user.id %}">
+                    <input type="submit" class="btn btn-primary" value="Editar Perfil"/>
+                </form>
 
-        <p>
-            Última inicio de sesión: {{ perfilusuario.user.last_login|date:"M, d-Y, h:i a" }}
-        </p>
+                <form class="navbar-form nav-tabs-justified" method="get" action="{% url 'auth_password_change' %}">
 
-        <p>
-            <a href="{% url 'temas_creados' perfilusuario.user.id %}">Temas creados</a>
-        </p>
-
-         <p>
-            <a href="{% url 'mensajes_creados' perfilusuario.user.id %}">Mensajes creados</a>
-        </p>
-
-        <p>
-
-        <form class="navbar-form nav-tabs-justified" method="get" action="{% url 'editar_user' object.user.id %}">
-
-            <input type="submit" class="btn btn-primary" value="Editar Perfil"/>
-        </form>
-
-        </p>
-
-
+                    <input type="submit" class="btn btn-primary" value="Cambiar contraseña"/>
+                </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-
 
 {% endblock %}

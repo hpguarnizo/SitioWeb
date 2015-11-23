@@ -85,7 +85,7 @@ def MensajeCensura(request, **kwargs):
     pk = kwargs.get("pk")
     mensaje=Mensaje.objects.filter(id=pk)[0]
     form=FormMensaje
-    context={'mensaje':mensaje,'form':form}
+    context={'mensaje':mensaje,'form':form,'media_url':MEDIA_URL}
     return render(request,'foro/msjCensura.html',context)
 
 def ConfirmarCensura(request):
@@ -94,18 +94,6 @@ def ConfirmarCensura(request):
     mensaje.apropiado=p.get('apropiado', False)
     mensaje.save()
     return redirect('mensajes', pk=mensaje.tema.id)
-
-
-
-
-class MensajeApropiado(UpdateView):
-    model = Mensaje
-    form_class = FormMensaje
-    template_name = 'foro/msjCensura.html'
-
-    def get_success_url(self,**kwargs):
-        tema=Tema.objects.filter(id=self.kwargs.get('pk'))[0]
-        return reverse_lazy('mensajes', pk=tema.id)
 
 
 

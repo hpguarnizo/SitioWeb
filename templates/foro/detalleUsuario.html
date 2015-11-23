@@ -4,63 +4,74 @@
 
 {% block content %}
 
-    <div class="main">
-        <div id="rtitle">Perfil</div>
-        <br/>
-
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 ">
+                <br>
+                <b>Imagen de perfil</b><br><br>
                 {% if object.imagen_avatar %}
-                    <p><img border="0" alt="Profile Pic" src="{{ object.imagen_avatar }}"/></p>
+                    <img class="img-rounded" border="0" alt="Profile Pic" src="{{ object.imagen_avatar }}"/><br>
                 {% else %}
-                    <p><img border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/></p>
+                    <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png"
+                         height="140" width="140"/><br>
                 {% endif %}
+            </div>
+            <div class="col-sm-9 ">
+                <br>
+                <b>Información personal</b><br><br>
+                {% if object.user.first_name and object.user.last_name %}
+                    <div class="informacion">
+                        Nombre: {{ object.user.first_name }} {{ object.user.last_name }} <br>
+                    </div>
+                {% else %}
+                    <div class="informacion">
+                        Aún no registra su nombre y apellidos.<br>
+                    </div>
+                {% endif %}
+                Correo electrónico:
+                <div class="informacion">
+                    {{ object.user.email }} <br>
+                </div>
+
+                Nombre de usuario:
+                <div class="informacion">
+                    {{ object.user.username }} <br>
+                </div>
+
+                <br>
+                <b>Actividad</b><br><br>
 
 
-        <p>
+                Número de mensajes:
+                <div class="informacion">
+                    {{ object.mensajes }} <br>
+                </div>
 
-            {% if object.user.first_name and object.user.last_name %}
-                Nombre: {{ object.user.first_name }} {{ object.user.last_name }}
-            {% else %}
-                Aún no registra su nombre y apellidos.
-            {% endif %}
 
-        </p>
+                Fecha de registro:
+                <div class="informacion">
+                    {{ object.user.date_joined |date:"M, d-Y, h:i a" }} <br>
+                </div>
 
-        <p>
-            Nombre de usuario: {{ object.user.username }}
-        </p>
+                Última actualización:
+                <div class="informacion">
+                    {{ object.actualizacion |date:"M, d-Y, h:i a" }} <br>
+                </div>
 
-        <p>
-            Número de mensajes: {{ object.mensajes }}
-        </p>
+                Última inicio de sesión:
+                <div class="informacion">
+                    {{ object.user.last_login |date:"M, d-Y, h:i a" }} <br>
+                </div>
 
-        <p>
-            Correo electrónico: {{ object.user.email }}
-        </p>
+                <a href="{% url 'temas_creados' object.user.id %}">Temas creados</a> <br>
 
-        <p>
-            Fecha de registro: {{ object.user.date_joined |date:"M, d-Y, h:i a"}}
-        </p>
 
-        <p>
-            Última actualización: {{ object.actualizacion |date:"M, d-Y, h:i a"}}
-        </p>
+                <a href="{% url 'mensajes_creados' object.user.id %}">Mensajes creados</a> <br>
 
-        <p>
-            Última inicio de sesión: {{ object.user.last_login |date:"M, d-Y, h:i a"}}
-        </p>
+            </div>
 
-        <p>
-            <a href="{% url 'temas_creados' object.user.id %}">Temas creados</a>
-        </p>
-
-         <p>
-            <a href="{% url 'mensajes_creados' object.user.id %}">Mensajes creados</a>
-        </p>
-
+        </div>
 
     </div>
-
-
 
 {% endblock %}

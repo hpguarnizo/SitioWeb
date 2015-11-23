@@ -1,6 +1,6 @@
 __author__ = 'renatto'
 
-from django.forms import ModelForm
+from django.forms import ModelForm,FileInput
 from.models import *
 from registration.forms import RegistrationFormUniqueEmail
 from django import forms
@@ -24,7 +24,13 @@ class FormPerfil(ModelForm):
     class Meta:
         model   = PerfilUsuario
         exclude = ["mensajes", "user"]
+        widgets = {
+            'avatar': FileInput(),
+        }
 
+    def __init__(self, *args, **kwargs):
+        super(FormPerfil, self).__init__(*args, **kwargs)
+        self.fields['avatar'].widget.attrs = {'id':'selectedFile'}
 
 class FormForo(ModelForm):
     class Meta:
