@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-
+{% block title %}{% trans "Foros" %}{% endblock %}
 
 {% block content %}
 
@@ -13,8 +13,8 @@
                 <thead class="cf">
                 <tr>
                     <td>Título</td>
-                    <td>Temas</td>
-                    <td>Mensajes</td>
+                    <td class="centrado">Temas</td>
+                    <td class="centrado">Mensajes</td>
                     <td>Último mensaje</td>
 
                 </tr>
@@ -27,8 +27,8 @@
                             <a href="{% url 'temas' foro.pk %}">{{ foro.titulo }}</a><br>
                             {{ foro.descripcion }}
                         </td>
-                        <td data-title='Temas'>{{ foro.num_temas }}</td>
-                        <td data-title='Mensajes'>{{ foro.num_mensajes }}</td>
+                        <td data-title='Temas' class="centrado">{{ foro.num_temas }}</td>
+                        <td data-title='Mensajes' class="centrado">{{ foro.num_mensajes }}</td>
 
                         {% if foro.ultimo_mensaje %}
                             <td data-title='Último mensaje'>
@@ -36,7 +36,7 @@
                                 {% if foro.ultimo_mensaje.autor.id == request.user.id %}
                                     Por: <a href="{% url 'editar_perfil' request.user.id %}"> {{ foro.ultimo_mensaje.autor }} </a>
                                 {% elif request.user.is_authenticated%}
-                                    Por: <a href="{% url 'detalle_usuario' foro.autor.id %}"> {{ foro.ultimo_mensaje.autor }} </a>
+                                    Por: <a href="{% url 'detalle_usuario' foro.ultimo_mensaje.autor.id %}"> {{ foro.ultimo_mensaje.autor }} </a>
                                 {% else %}
                                     Por: <a href="{% url 'auth_login' %}?next={{ request.path }}"> {{ foro.ultimo_mensaje.autor }} </a>
                                 {% endif %}

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% block title %}Perfil de: {{ object.user.username }}{% endblock %}
 
 {% block content %}
 
@@ -38,19 +39,23 @@
         </p>
 
         <p>
-            Fecha de registro: {{ object.user.date_joined }}
+            Fecha de registro: {{ object.user.date_joined |date:"M, d-Y, h:i a"}}
         </p>
 
         <p>
-            Última actualización: {{ object.actualizacion }}
+            Última actualización: {{ object.actualizacion |date:"M, d-Y, h:i a"}}
         </p>
 
         <p>
-            Última inicio de sesión: {{ object.user.last_login }}
+            Última inicio de sesión: {{ object.user.last_login |date:"M, d-Y, h:i a"}}
         </p>
 
         <p>
             <a href="{% url 'temas_creados' object.user.id %}">Temas creados</a>
+        </p>
+
+         <p>
+            <a href="{% url 'mensajes_creados' object.user.id %}">Mensajes creados</a>
         </p>
 
 

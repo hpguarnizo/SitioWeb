@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
-
+{% block title %}{{ tema.titulo }}{% endblock %}
 
 {% block content %}
-
-
 
     Fecha en Perú: {% now "m-d-Y" %}
 
@@ -13,12 +11,12 @@
     </div>
 
     {% if object_list %}
-        {% if tema.autor.id == request.user.id %}
+        {% if tema.autor.user.id == request.user.id and request.user.is_authenticated%}
             Tema: {{ tema.titulo }} - {{ tema.fecha|date:"M-d-Y" }}
             - Autor: <a href="{% url 'editar_perfil' request.user.id %}">{{ tema.autor }} </a>
         {% else %}
             Tema: {{ tema.titulo }} - {{ tema.fecha|date:"M-d-Y" }}
-            - Autor: <a href="#">{{ tema.autor }} </a>
+            - Autor: <a href="{% url 'detalle_usuario' tema.autor.id %}">{{ tema.autor }} </a>
         {% endif %}
         <br>
 
@@ -41,10 +39,10 @@
                         <th class="celdacontenido" style='width: 85%;'>
                             {{ mensaje.fecha|date:"M, d-Y, h:i a" }}
 
-                            {% if  request.user.id == mensaje.tema.autor.id and mensaje.apropiado == 1 %}
-                                <a href="#" class="apropiado">Inapropiado</a>
-                            {% elif request.user.id == mensaje.autor.id and mensaje.apropiado == 0 %}
-                                <a href="#" class="apropiado">Apropiado</a>
+                            {% if  request.user.id == mensaje.tema.autor.id and mensaje.apropiado == 1 and request.user.id != mensaje.autor.id %}
+                                <a href="{% url 'censura' mensaje.id %}" class="censura">Marcar como inapropiado</a>
+                            {% elif request.user.id == mensaje.tema.autor.id and mensaje.apropiado == 0 and request.user.id != mensaje.autor.id%}
+                                <a href="{% url 'censura' mensaje.id %}" class="censura">Marcar como apropiado</a>
                             {% endif %}
 
                         </th>
@@ -53,7 +51,7 @@
                   	<tbody>
                     <tr>
                     <td data-title='Autor'>
-                            {% if mensaje.autor.id == request.user.id %}
+                            {% if mensaje.autor.id == request.user.id and request.user.is_authenticated%}
                                 <a href="{% url 'editar_perfil' request.user.id %}"> {{ mensaje.autor }} </a><br>
                             {% else %}
                                 <a href="{% url 'detalle_usuario' mensaje.autor.id %}"> {{ mensaje.autor }} </a><br>
@@ -75,8 +73,16 @@
                 {% endwith %}
                 </td>
                 <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
-                    {{ mensaje.contenido }}<br>
-                    <a class="citar" href="#">Citar</a>
+                    {% if mensaje.apropiado == 1 %}
+                       {{ mensaje.contenido }}<br>
+                       <a class="citar" href="#">Citar</a>
+                    {% else %}
+                        <div class="inapropiado">
+                         Mensaje inapropiado. <br>
+                        </div>
+                    {%  endif %}
+
+
                 </td>
 
                 </tr>
@@ -89,9 +95,6 @@
     {% else %}
         <li>No hay mensajes publicados en este tema {{ tema }}</li>
     {% endif %}
-
-
-
 
 
 {% endblock %}

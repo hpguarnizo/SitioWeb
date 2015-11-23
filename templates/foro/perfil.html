@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% block title %}Perfil{% endblock %}
 
 {% block content %}
 
@@ -44,19 +44,23 @@
         </p>
 
         <p>
-            Fecha de registro: {{ perfilusuario.user.date_joined }}
+            Fecha de registro: {{ perfilusuario.user.date_joined|date:"M, d-Y, h:i a" }}
         </p>
 
         <p>
-            Última actualización: {{ perfilusuario.actualizacion }}
+            Última actualización: {{ perfilusuario.actualizacion|date:"M, d-Y, h:i a" }}
         </p>
 
         <p>
-            Última inicio de sesión: {{ perfilusuario.user.last_login }}
+            Última inicio de sesión: {{ perfilusuario.user.last_login|date:"M, d-Y, h:i a" }}
         </p>
 
         <p>
             <a href="{% url 'temas_creados' perfilusuario.user.id %}">Temas creados</a>
+        </p>
+
+         <p>
+            <a href="{% url 'mensajes_creados' perfilusuario.user.id %}">Mensajes creados</a>
         </p>
 
         <p>

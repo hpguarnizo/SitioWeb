@@ -1,15 +1,21 @@
 {% extends "registration/registration_base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Account Activated" %}{% endblock %}
+{% block title %}{% trans "Cuenta activada" %}{% endblock %}
 
 {% block content %}
-<p>
-    {% trans "Your account is now activated." %}
-    {% if not user.is_authenticated %}
-    {% trans "You can log in." %}
-    {% endif %}
-</p>
+
+    <div class="col-sm-6 col-sm-offset-3">
+        <p>
+            {% trans "Su cuenta está activada." %}
+            {% if not user.is_authenticated %}
+                {% trans "Ahora puede iniciar sesión." %}
+            {% endif %}
+        </p>
+
+    </div>
+
+
 {% endblock %}
 
 

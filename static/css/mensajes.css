@@ -9,13 +9,15 @@
     right:0;
 }
 
-.apropiado {
+.censura {
     position: absolute;
     top: 0px;
     right: 0px;
 }
 
-
+.inapropiado{
+    color: red;
+}
 
 table a {
     color: #0b6cff;

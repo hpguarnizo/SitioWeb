@@ -35,6 +35,11 @@ urlpatterns = [
     url(r'^usuario/(?P<pk>\d+)/', LR(DetalleUsuario.as_view()), name="detalle_usuario"),
     url(r'^accounts/login/$', AR(login), name='auth_login', ),
     url(r'^temascreados/(?P<pk>\d+)/', LR(ListaTemasUsuario.as_view()), name="temas_creados"),
+    url(r'^mensajescreados/(?P<pk>\d+)/', LR(ListaMensajesUsuario.as_view()), name="mensajes_creados"),
+
+    url(r'^msjcensura/(?P<pk>\d+)/', LR(MensajeCensura), name="censura"),
+    url(r'^confcensura/$', LR(ConfirmarCensura), name="conf_censura"),
+
     url(r'accounts/register/$',
         AR(RegistrationView.as_view(form_class=RegistrationForm)),
         name='registration_register'),

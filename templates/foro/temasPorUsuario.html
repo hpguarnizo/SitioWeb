@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-
+{% block title %}Temas de: {{ usuario.username }}{% endblock %}
 
 {% block content %}
 
@@ -27,7 +27,7 @@
                 <tr>
                     <td>Tema</td>
                     <td>Foro</td>
-                    <td>Respuestas</td>
+                    <td class="centrado">Respuestas</td>
                     <td>Último mensaje</td>
 
                 </tr>
@@ -44,9 +44,9 @@
                         </td>
 
                         {% if tema.num_mensajes == 0 %}
-                            <td data-title='Respuestas'>0</td>
+                            <td data-title='Respuestas' class="centrado">0</td>
                         {% else %}
-                            <td data-title='Respuestas'>{{ tema.num_respuestas }}</td>
+                            <td data-title='Respuestas' class="centrado">{{ tema.num_respuestas }}</td>
                         {% endif %}
 
                         <td data-title='Último mensaje'>

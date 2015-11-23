@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% block title %}Nuevo tema{% endblock %}
 
 {% block content %}
 
@@ -16,7 +16,7 @@
         <label for="mensaje">Mensaje:</label><br>
         <textarea id="mensaje" name="mensaje" rows="20" cols="95" required></textarea> <br>
         <input type="hidden" name="foro" value="{{ foro }}"/>
-        <input type="submit" name="confirmar" value="Confirmar"/>
+        <input  type="submit" class="btn btn-primary" name="confirmar" value="Confirmar"/>
 
     </form>
 
