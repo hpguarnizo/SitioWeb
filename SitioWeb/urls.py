@@ -45,6 +45,10 @@ urlpatterns = [
     url(r'^msjcensura/(?P<pk>\d+)/', LR(MensajeCensura), name="censura"),
     url(r'^confcensura/$', LR(ConfirmarCensura), name="conf_censura"),
 
+    url(r'^editmensaje/(?P<pk>\d+)/', LR(EditarMensaje), name="edit_mensaje"),
+    url(r'^confeditmsj/$', LR(ConfirmarEdicion), name="conf_edit_msj"),
+    url(r'^buscar/$',LR(BuscarContenido.as_view()), name="buscar"),
+
     url(r'accounts/register/$',
         AR(RegistrationView.as_view(form_class=RegistrationForm)),
         name='registration_register'),

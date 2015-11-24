@@ -6,12 +6,13 @@
 
     Fecha en Perú: {% now "m-d-Y" %}
 
-    <div >
-        <a href="{% url 'home' %}">Foros</a> > <a href="{% url 'temas' tema.foro.id %}">{{ tema.foro.titulo }}</a> > {{ tema.titulo }}
+    <div>
+        <a href="{% url 'home' %}">Foros</a> > <a href="{% url 'temas' tema.foro.id %}">{{ tema.foro.titulo }}</a>
+        > {{ tema.titulo }}
     </div>
 
     {% if object_list %}
-        {% if tema.autor.id == request.user.id and request.user.is_authenticated%}
+        {% if tema.autor.id == request.user.id and request.user.is_authenticated %}
             Tema: {{ tema.titulo }} - {{ tema.fecha|date:"M-d-Y" }}
             - Autor: <a href="{% url 'editar_perfil' request.user.id %}">{{ tema.autor }} </a>
         {% elif tema.autor.is_active == 0 %}
@@ -23,79 +24,100 @@
         {% endif %}
         <br>
 
-        <a href="{% url 'nuevo_mensaje' tema.id %}">Nuevo mensaje</a><br><br>
+        <a href="{% url 'nuevo_mensaje' tema.id %}">Nuevo mensaje</a><br>
 
         {% for mensaje in object_list %}
 
             <div id="no-more-tables">
 
-            <table style='table-layout:fixed;width:100%' class="col-md-12 table-bordered table-striped table-condensed cf">
+                <table style='table-layout:fixed;width:100%'
+                       class="col-md-12 table-bordered table-striped table-condensed cf">
 
-                <thead class="cf">
-                {% with mensaje.profile_data as pdata %}
-                    <tr>
+                    <thead class="cf">
+                    {% with mensaje.profile_data as pdata %}
+                        <tr>
 
-                        <th style='width: 15%;'>
-                            Autor
+                            <th style='width: 15%;'>
+                                Autor
 
-                        </th>
-                        <th class="celdacontenido" style='width: 85%;'>
-                            {{ mensaje.fecha|date:"M, d-Y, h:i a" }}
+                            </th>
+                            <th class="celdacontenido" style='width: 85%;'>
+                                {{ mensaje.fecha|date:"M, d-Y, h:i a" }}
 
-                            {% if  request.user.id == mensaje.tema.autor.id and mensaje.apropiado == 1 and request.user.id != mensaje.autor.id %}
-                                <a href="{% url 'censura' mensaje.id %}" class="censura">Marcar como inapropiado</a>
-                            {% elif request.user.id == mensaje.tema.autor.id and mensaje.apropiado == 0 and request.user.id != mensaje.autor.id%}
-                                <a href="{% url 'censura' mensaje.id %}" class="censura">Marcar como apropiado</a>
+                                {% if  request.user.id == mensaje.tema.autor.id and mensaje.apropiado == 1 and request.user.id != mensaje.autor.id %}
+                                    <a href="{% url 'censura' mensaje.id %}" class="censura">Marcar como inapropiado</a>
+                                {% elif request.user.id == mensaje.tema.autor.id and mensaje.apropiado == 0 and request.user.id != mensaje.autor.id %}
+                                    <a href="{% url 'censura' mensaje.id %}" class="censura">Marcar como apropiado</a>
+                                {% endif %}
+
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        <td data-title='Autor'>
+                        {% if mensaje.autor.id == request.user.id and request.user.is_authenticated %}
+                            <a href="{% url 'editar_perfil' request.user.id %}">{{ mensaje.autor }} </a><br>
+                        {% elif mensaje.autor.is_active == 0 %}
+                            {{ mensaje.autor }} <br>
+                        {% else %}
+                            <a href="{% url 'detalle_usuario' mensaje.autor.id %}"> {{ mensaje.autor }} </a><br>
+                        {% endif %}
+
+                        {% if request.user.is_staff %} Administrador<br>
+                        {% else %}
+                            Miembro<br>
+                        {% endif %}
+
+                        {% if mensaje.autor.is_active == 0 %}
+                            <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png"
+                                 height="140" width="140"/><br>
+                        {% elif  pdata.1 %}
+                            <img class="img-rounded" border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/>
+                            <br>
+                        {% else %}
+                            <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png"
+                                 height="140" width="140"/><br>
+                        {% endif %}
+
+                        Fecha de registro: <br> {{ mensaje.autor.date_joined|date:"M-d-Y" }} <br>
+                        Número de mensajes: {{ pdata.0 }}
+                    {% endwith %}
+                    </td>
+                    <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
+                        {% if mensaje.apropiado == 1 %}
+                            {{ mensaje.contenido|safe }}<br>
+
+                            {% if mensaje.editado %}
+                                <div class="izquierda">
+                                Editado - {{ mensaje.actualizacion|date:"M, d-Y, h:i a" }}
+                                </div>
                             {% endif %}
 
-                        </th>
+                            {% if request.user.is_authenticated %}
+                                <div class="derecha">
+                                    <a href="#">Citar</a>
+
+                                    {%  if mensaje.autor.id == request.user.id %}
+                                        <a href="{% url 'edit_mensaje' mensaje.id %}">Editar</a>
+                                    {% endif %}
+
+                                </div>
+                            {% endif %}
+
+                        {% else %}
+                            <div class="inapropiado">
+                                Mensaje inapropiado. <br>
+                            </div>
+                        {% endif %}
+
+
+                    </td>
+
                     </tr>
-                    </thead>
-                  	<tbody>
-                    <tr>
-                    <td data-title='Autor'>
-                            {% if mensaje.autor.id == request.user.id and request.user.is_authenticated%}
-                                <a href="{% url 'editar_perfil' request.user.id %}">{{ mensaje.autor }} </a><br>
-                            {% elif mensaje.autor.is_active == 0 %}
-                                 {{ mensaje.autor }} <br>
-                            {% else %}
-                                <a href="{% url 'detalle_usuario' mensaje.autor.id %}"> {{ mensaje.autor }} </a><br>
-                            {% endif %}
 
-                    {% if request.user.is_staff %} Administrador<br>
-                    {% else %}
-                        Miembro<br>
-                    {% endif %}
-
-                    {% if mensaje.autor.is_active == 0 %}
-                       <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/><br>
-                    {% elif  pdata.1 %}
-                        <img class="img-rounded" border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/><br>
-                    {% else %}
-                       <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/><br>
-                    {% endif %}
-
-                    Fecha de registro: <br> {{ mensaje.autor.date_joined|date:"M-d-Y" }} <br>
-                    Número de mensajes: {{ pdata.0 }}
-                {% endwith %}
-                </td>
-                <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
-                    {% if mensaje.apropiado == 1 %}
-                       {{ mensaje.contenido|safe }}<br>
-                       <a class="citar" href="#">Citar</a>
-                    {% else %}
-                        <div class="inapropiado">
-                         Mensaje inapropiado. <br>
-                        </div>
-                    {%  endif %}
-
-
-                </td>
-
-                </tr>
-
-            	</tbody>
-            </table>
+                    </tbody>
+                </table>
             </div> <br>
         {% endfor %}
         {% include "paginador.html" %}

@@ -97,6 +97,22 @@ def ConfirmarCensura(request):
     return redirect('mensajes', pk=mensaje.tema.id)
 
 
+def EditarMensaje(request, **kwargs):
+    pk = kwargs.get("pk")
+    mensaje=Mensaje.objects.filter(id=pk)[0]
+    form=EditorWYSIWYG
+    context={'mensaje':mensaje,'form':form,'media_url':MEDIA_URL}
+    return render(request,'foro/editarMensaje.html',context)
+
+
+def ConfirmarEdicion(request):
+    p = request.POST
+    mensaje=Mensaje.objects.filter(id=p["id"])[0]
+    mensaje.editado=True
+    mensaje.contenido=p.get('mensaje')
+    mensaje.save()
+    return redirect('mensajes', pk=mensaje.tema.id)
+
 
 class EditarPerfil(UpdateView):
     model = PerfilUsuario
@@ -171,6 +187,22 @@ def CrearMensaje(request):
         return redirect('mensajes', pk=tema.id)
     else:
         return redirect('home')
+
+class BuscarContenido(ListView):
+    Model = Mensaje
+    template_name = "foro/resultadoBusqueda.html"
+    paginate_by = 15
+
+    def get_queryset(self, **kwargs):
+        print(self.request.GET.get('texto'))
+        return Mensaje.objects.filter(contenido__search=self.request.GET.get('texto'))
+
+    def get_context_data(self, **kwargs):
+        context = super(BuscarContenido, self).get_context_data()
+        context['texto'] = self.request.GET.get('texto')
+        context['media_url'] = MEDIA_URL
+        return context
+
 
 def DesactivarCuenta(request):
     password=request.POST.get('password')

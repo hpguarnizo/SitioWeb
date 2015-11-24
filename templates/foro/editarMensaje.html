@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}Censura de mensaje{% endblock %}
+{% block title %}Editar mensaje{% endblock %}
 
 {% block content %}
 
@@ -12,14 +12,14 @@
     <div>
         <a href="{% url 'home' %}">Foros</a> > <a
             href="{% url 'temas' mensaje.tema.foro.id %}">{{ mensaje.tema.foro.titulo }}</a>
-        > <a href="{% url 'mensajes' mensaje.tema.id %}">{{ mensaje.tema.titulo }}</a> > Censura del mensaje
+        > <a href="{% url 'mensajes' mensaje.tema.id %}">{{ mensaje.tema.titulo }}</a> > Editar mensaje
     </div>
 
 
     {% if mensaje.tema.autor.user.id == request.user.id and request.user.is_authenticated %}
         Tema: {{ mensaje.tema.titulo }} - {{ mensaje.tema.fecha|date:"M-d-Y" }}
         - Autor: <a href="{% url 'editar_perfil' request.user.id %}">{{ mensaje.tema.autor }} </a>
-     {% elif mensaje.autor.is_active == 0 %}
+    {% elif mensaje.autor.is_active == 0 %}
         Tema: {{ mensaje.tema.titulo }} - {{ mensaje.tema.fecha|date:"M-d-Y" }}
         - Autor:{{ mensaje.tema.autor }}
     {% else %}
@@ -51,8 +51,8 @@
                 <td data-title='Autor'>
                 {% if mensaje.autor.id == request.user.id and request.user.is_authenticated %}
                     <a href="{% url 'editar_perfil' request.user.id %}"> {{ mensaje.autor }} </a><br>
-                {% elif mensaje.autor.is_active == 0 %}
-                    {{ mensaje.autor }} <br>
+                 {% elif mensaje.autor.is_active == 0 %}
+                       {{ mensaje.autor }} <br>
                 {% else %}
                     <a href="{% url 'detalle_usuario' mensaje.autor.id %}"> {{ mensaje.autor }} </a><br>
                 {% endif %}
@@ -75,7 +75,7 @@
             {% endwith %}
             </td>
             <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
-                {{ mensaje.contenido | safe }}<br>
+                {{ mensaje.contenido | safe}}<br>
             </td>
 
             </tr>
@@ -84,13 +84,12 @@
         </table>
     </div>
     <br>
-    <b>Desmarcando la casilla el mensaje se catalogará como inapropiado, caso contrario al seleccionar
-        la casilla, será apropiado.</b> <br><br>
+    <b>Ingrese el nuevo contenido del mensaje.</b> <br><br>
 
-    <form method="POST" action="{% url 'conf_censura' %}">
+    <form method="POST" action="{% url 'conf_edit_msj'%}">
         {% csrf_token %}
-        Apropiado:
-        {{ form.apropiado }}<br><br>
+
+        {{ form|safe }}<br><br>
         <input type="hidden" name="id" value="{{ mensaje.id }}">
         <input class="btn btn-primary" type="submit" value="Confirmar" id="submit"/>
     </form>

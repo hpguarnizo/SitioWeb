@@ -71,13 +71,12 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
 
-                    <form class="navbar-form navbar-right" method="get" action="http://www.google.com/search">
+                    <form class="navbar-form navbar-right" method="get" action="{% url 'buscar' %}">
                         <div class="form-group">
-                            <input class="form-control input-sm" type="text" name="q" size="31" maxlength="255"
+                            <input class="form-control input-sm" type="text" name="texto" size="31" maxlength="255"
                                    value=""/>
                             <input type="submit" class="form-control" value="Buscar"/>
-                            <input type="radio" name="sitesearch" value=""/> La web
-                            <input type="radio" name="sitesearch" value="askdavetaylor.com" checked/> En el sitio<br/>
+
                         </div>
 
                     </form>

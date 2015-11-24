@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}Mensajes de: {{ usuario.username }}{% endblock %}
+{% block title %}Resultado de búsqueda{% endblock %}
 
 {% block content %}
 
@@ -9,22 +9,13 @@
     Fecha en Perú: {% now "m-d-Y" %}
 
     <div>
-
-        {% if usuario.id == request.user.id %}
             <a href="{% url 'home' %}">Foros</a> >
-            <a href="{% url 'editar_perfil' request.user.id %}">{{ usuario.username }}</a>
-            > Mensajes creados por {{ usuario.username }}
-        {% else %}
-            <a href="{% url 'home' %}">Foros</a> >
-            <a href="{% url 'detalle_usuario' usuario.id %}">{{ usuario.username }}</a>
-            > Mensajes creados por {{ usuario.username }}
-        {% endif %}
+            Resultado de buscar {{ texto }}
 
-    </div>
-    <br>
+    </div><br>
     {% include "paginador.html" %}<br>
-
     {% if object_list %}
+
 
         {% for mensaje in object_list %}
 
@@ -53,7 +44,7 @@
                         {% if mensaje.autor.id == request.user.id %}
                             <a href="{% url 'editar_perfil' request.user.id %}"> {{ mensaje.autor }} </a><br>
                         {% else %}
-                            <a href="{% url 'detalle_usuario' usuario.id %}"> {{ mensaje.autor }} </a><br>
+                            <a href="{% url 'detalle_usuario' mensaje.autor.id %}"> {{ mensaje.autor }} </a><br>
                         {% endif %}
 
                         {% if request.user.is_staff %} Administrador<br>
@@ -76,6 +67,7 @@
                     <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
                         {% if mensaje.apropiado == 1 %}
                             {{ mensaje.contenido|safe }}<br>
+
                              {% if mensaje.editado %}
                                 <div class="izquierda">
                                 Editado - {{ mensaje.actualizacion|date:"M, d-Y, h:i a" }}
@@ -100,7 +92,7 @@
         {% endfor %}
         {% include "paginador.html" %}
     {% else %}
-        <li>El usuario no ha publicado ningún mensaje</li>
+        <li>No hay resultados.</li>
     {% endif %}
 
 

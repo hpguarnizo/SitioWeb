@@ -83,6 +83,7 @@ class Mensaje(Model):
     contenido = TextField(max_length=10000)
     # En python True=1
     apropiado = BooleanField(default=1)
+    editado = BooleanField(default=0)
 
     class Meta:
         ordering = ["fecha"]

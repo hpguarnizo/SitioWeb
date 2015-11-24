@@ -10,9 +10,10 @@
     <div>
         <a href="{% url 'home' %}">Foros</a> > {{ foro.titulo }}
     </div>
-    <a href="{% url 'nuevo_tema' foro.id %}">Crear nuevo tema</a>
+    <a href="{% url 'nuevo_tema' foro.id %}">Crear nuevo tema</a><br>
+    {% include "paginador.html" %}
+    <br>
     {% if object_list %}
-
 
         <div id="no-more-tables">
             <table class="col-md-12 table-bordered table-striped table-condensed cf">
