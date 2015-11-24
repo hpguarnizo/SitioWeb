@@ -95,6 +95,10 @@ class Mensaje(Model):
         p = self.autor.perfil
         return p.mensajes, p.avatar
 
+    def getContenido(self):
+        cont=self.contenido.replace("[q]","<div class='cita'>")
+        cont=cont.replace("[/q]","</div>")
+        return cont
 
 class PerfilUsuario(Model):
     avatar = ImageField("Foto de perfil", upload_to="imagenes/", blank=True, null=True)

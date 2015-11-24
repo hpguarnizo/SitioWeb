@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^creartema/$', LR(CrearTema), name='crear_tema'),
     url(r'^temas/(?P<pk>\d+)/$', ListaTemas.as_view(), name="temas"),
     url(r'^mensajes/(?P<pk>\d+)/$',LR(ListaMensajes.as_view()), name="mensajes"),
-    url(r'^nuevomensaje/(?P<pk>\d)/$',LR(NuevoMensaje), name="nuevo_mensaje"),
+    url(r'^nuevomensaje/(?P<pk>\d+)/$',LR(NuevoMensaje), name="nuevo_mensaje"),
     url(r'^crearmensaje/$',LR(CrearMensaje), name="crear_mensaje"),
     url(r'^usuario/(?P<pk>\d+)/', LR(DetalleUsuario.as_view()), name="detalle_usuario"),
     url(r'^accounts/login/$', AR(login), name='auth_login', ),
@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'^editmensaje/(?P<pk>\d+)/', LR(EditarMensaje), name="edit_mensaje"),
     url(r'^confeditmsj/$', LR(ConfirmarEdicion), name="conf_edit_msj"),
     url(r'^buscar/$',LR(BuscarContenido.as_view()), name="buscar"),
+     url(r'^citarmensaje/(?P<pk>\d+)/$',LR(CitarMensaje), name="citar"),
 
     url(r'accounts/register/$',
         AR(RegistrationView.as_view(form_class=RegistrationForm)),

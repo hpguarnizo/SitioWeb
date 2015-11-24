@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Nuevo mensaje{% endblock %}
+
+{% block content %}
+
+    <div >
+        <a href="{% url 'home' %}">Foros</a> > <a href="{% url 'temas' mensaje.tema.foro.id %}">{{ mensaje.tema.foro.titulo }}</a>
+        > <a href="{% url 'mensajes' mensaje.tema.id %}">{{ mensaje.tema.titulo }}</a> > Nuevo mensaje
+    </div>
+
+    <h4>Nuevo mensaje en el tema {{ mensaje.tema.titulo }}</h4>
+
+    <form method="post" action="{% url 'crear_mensaje' %}">
+        {% csrf_token %}
+        <label for="mensaje">Mensaje:</label><br>
+        {{ form|safe }}<br>
+        <input type="hidden" name="tema" value="{{ mensaje.tema.id }}"/>
+        <input class="btn btn-primary" type="submit" name="confirmar" value="Confirmar"/>
+
+    </form>
+
+
+
+{% endblock %}

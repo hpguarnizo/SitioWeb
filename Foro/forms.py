@@ -5,7 +5,7 @@ from.models import *
 from registration.forms import RegistrationFormUniqueEmail
 from django import forms
 from django.contrib.auth.models import User
-from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
+from django_summernote.widgets import SummernoteWidget
 
 
 attrs_dict = { 'class': 'required' }
@@ -117,5 +117,5 @@ class AnotherForm(forms.Form):
      foo = forms.CharField(widget=SummernoteWidget())
 
 class EditorWYSIWYG(forms.Form):
-
     mensaje=forms.CharField(widget=SummernoteWidget(),required=True,label="")
+

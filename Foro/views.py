@@ -100,7 +100,7 @@ def ConfirmarCensura(request):
 def EditarMensaje(request, **kwargs):
     pk = kwargs.get("pk")
     mensaje=Mensaje.objects.filter(id=pk)[0]
-    form=EditorWYSIWYG
+    form=EditorWYSIWYG(initial={'mensaje':mensaje.contenido})
     context={'mensaje':mensaje,'form':form,'media_url':MEDIA_URL}
     return render(request,'foro/editarMensaje.html',context)
 
@@ -113,6 +113,13 @@ def ConfirmarEdicion(request):
     mensaje.save()
     return redirect('mensajes', pk=mensaje.tema.id)
 
+def CitarMensaje(request, **kwargs):
+    pk = kwargs.get("pk")
+    mensaje=Mensaje.objects.filter(id=pk)[0]
+    cita="[q]<b>"+mensaje.autor.username+"</b> : <br>"+mensaje.contenido+"[/q]"
+    form=EditorWYSIWYG(initial={'mensaje':cita})
+    context={'form':form,'mensaje':mensaje}
+    return render(request,'foro/citarMensaje.html',context)
 
 class EditarPerfil(UpdateView):
     model = PerfilUsuario
@@ -204,6 +211,8 @@ class BuscarContenido(ListView):
         return context
 
 
+
+
 def DesactivarCuenta(request):
     password=request.POST.get('password')
     usuario=request.user
@@ -236,3 +245,4 @@ def prueba(request):
     form=AnotherForm
     context={'form':form}
     return render(request,'prueba.html',context)
+

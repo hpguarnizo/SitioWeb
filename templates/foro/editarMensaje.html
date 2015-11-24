@@ -75,7 +75,7 @@
             {% endwith %}
             </td>
             <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
-                {{ mensaje.contenido | safe}}<br>
+                {{ mensaje.getContenido | safe}}<br>
             </td>
 
             </tr>

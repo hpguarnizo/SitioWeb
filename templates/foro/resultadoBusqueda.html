@@ -66,7 +66,7 @@
                     </td>
                     <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
                         {% if mensaje.apropiado == 1 %}
-                            {{ mensaje.contenido|safe }}<br>
+                            {{ mensaje.getContenido|safe }}<br>
 
                              {% if mensaje.editado %}
                                 <div class="izquierda">
