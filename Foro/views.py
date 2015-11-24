@@ -157,8 +157,9 @@ def CrearTema(request):
 def NuevoMensaje(request, **kwargs):
     pk = kwargs.get("pk")
     tema = Tema.objects.filter(id=pk, estado=1)[0]
-    context = {"tema": tema}
-    return render(request, "foro/nuevoMensaje.html", context)
+    form=EditorWYSIWYG
+    context = {"tema": tema,'form':form}
+    return render(request, "foro/nuevoMensaje2.html", context)
 
 
 def CrearMensaje(request):
