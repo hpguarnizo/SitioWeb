@@ -54,7 +54,7 @@ urlpatterns = [
     url(r'^editperfil/(?P<pk>\d+)/$', LR(EditarPerfil.as_view()), {}, name="editar_perfil"),
     url(r'^edituser/(?P<pk>\d+)/$', LR(EditarUsuario.as_view()), {}, name="editar_user"),
 
-
+    url(r'^summernote/', include('django_summernote.urls')),
 
     url(r'^prueba/$',prueba)
 

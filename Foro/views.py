@@ -137,8 +137,9 @@ class EditarUsuario(UpdateView):
 def NuevoTema(request, **kwargs):
     pk = kwargs.get("pk")
     foro = Foro.objects.filter(id=pk)[0]
-    context = {"foro": foro}
-    return render(request, "foro/nuevoTema.html", context)
+    form=EditorWYSIWYG
+    context = {"foro": foro,'form':form}
+    return render(request, "foro/nuevoTema2.html", context)
 
 
 def CrearTema(request):
@@ -199,4 +200,6 @@ def ActivarCuenta(request):
        return render(request,'foro/activarCuenta.html',context)
 
 def prueba(request):
-    return render(request,'prueba.html')
+    form=AnotherForm
+    context={'form':form}
+    return render(request,'prueba.html',context)

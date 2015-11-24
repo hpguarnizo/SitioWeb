@@ -32,6 +32,8 @@
 
                             {% if tema.autor.id == request.user.id and request.user.is_authenticated%}
                                 Autor: <a href="{% url 'editar_perfil' request.user.id %}"> {{ tema.autor }} </a><br>
+                            {% elif tema.autor.is_active == 0 %}
+                                    Por: {{ tema.autor }} <br>
                             {% else %}
                                 Autor: <a href="{% url 'detalle_usuario' tema.autor.id %}"> {{ tema.autor }} </a><br>
                             {% endif %}
@@ -52,6 +54,8 @@
                             {% if tema.ultimo_mensaje.autor.id == request.user.id and request.user.is_authenticated%}
                                 Por:
                                 <a href="{% url 'editar_perfil' request.user.id %}"> {{ tema.ultimo_mensaje.autor }} </a>
+                            {% elif tema.ultimo_mensaje.autor.is_active == 0 %}
+                                    Por: {{ tema.ultimo_mensaje.autor }}
                             {% else %}
                                 Por: <a href="{% url 'detalle_usuario' tema.ultimo_mensaje.autor.id %}"> {{ tema.ultimo_mensaje.autor }} </a>
                             {% endif %}

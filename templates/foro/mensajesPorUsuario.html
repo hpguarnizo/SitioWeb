@@ -11,11 +11,13 @@
     <div>
 
         {% if usuario.id == request.user.id %}
-            <a href="{% url 'home' %}">Foros</a> > <a href="{% url 'editar_perfil' request.user.id%}">{{ usuario.username }}</a>
-        > Mensajes creados por {{ usuario.username }}
+            <a href="{% url 'home' %}">Foros</a> >
+            <a href="{% url 'editar_perfil' request.user.id %}">{{ usuario.username }}</a>
+            > Mensajes creados por {{ usuario.username }}
         {% else %}
-            <a href="{% url 'home' %}">Foros</a> > <a href="{% url 'detalle_usuario' usuario.id%}">{{ usuario.username }}</a>
-        > Mensajes creados por {{ usuario.username }}
+            <a href="{% url 'home' %}">Foros</a> >
+            <a href="{% url 'detalle_usuario' usuario.id %}">{{ usuario.username }}</a>
+            > Mensajes creados por {{ usuario.username }}
         {% endif %}
 
     </div>
@@ -27,60 +29,72 @@
 
             <div id="no-more-tables">
 
-            <table style='table-layout:fixed;width:100%' class="col-md-12 table-bordered table-striped table-condensed cf">
+                <table style='table-layout:fixed;width:100%'
+                       class="col-md-12 table-bordered table-striped table-condensed cf">
 
-                <thead class="cf">
-                 <col style="width: 15px;"/>
-                 <col style="width: 85px;"/>
-                {% with mensaje.profile_data as pdata %}
-                    <tr>
+                    <thead class="cf">
+                    <col style="width: 15px;"/>
+                    <col style="width: 85px;"/>
+                    {% with mensaje.profile_data as pdata %}
+                        <tr>
 
-                        <th colspan="2">
-                            Re: <a href="{% url 'temas' mensaje.tema.foro.id %}">{{ mensaje.tema.foro.titulo }}</a>
+                            <th colspan="2">
+                                Re: <a href="{% url 'temas' mensaje.tema.foro.id %}">{{ mensaje.tema.foro.titulo }}</a>
                                 > <a href="{% url 'mensajes' mensaje.tema.id %}">{{ mensaje.tema.titulo }}</a>
                                 > {{ mensaje.fecha|date:"M, d-Y, h:i a" }}
-                        </th>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr st>
+                        <td data-title='Autor'>
+                        {% if mensaje.autor.id == request.user.id %}
+                            <a href="{% url 'editar_perfil' request.user.id %}"> {{ mensaje.autor }} </a><br>
+                        {% else %}
+                            <a href="{% url 'detalle_usuario' usuario.id %}"> {{ mensaje.autor }} </a><br>
+                        {% endif %}
+
+                        {% if request.user.is_staff %} Administrador<br>
+                        {% else %}
+                            Miembro<br>
+                        {% endif %}
+
+                        {% if  pdata.1 %}
+                            <img class="img-rounded" border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/>
+                            <br>
+                        {% else %}
+                            <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png"
+                                 height="140" width="140"/><br>
+                        {% endif %}
+
+                        Fecha de registro: <br> {{ mensaje.autor.date_joined|date:"M-d-Y" }} <br>
+                        Número de mensajes: {{ pdata.0 }}
+                    {% endwith %}
+                    </td>
+                    <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
+                        {% if mensaje.apropiado == 1 %}
+                            {{ mensaje.contenido|safe }}<br>
+                            <a class="citar" href="#">Citar</a>
+                        {% else %}
+                            <div class="inapropiado">
+                                Mensaje inapropiado. <br>
+                            </div>
+                        {% endif %}
+
+
+                        <a class="citar" href="{% url 'mensajes' mensaje.tema.id %}">Ir al tema</a>
+                    </td>
 
                     </tr>
-                    </thead>
-                  	<tbody>
-                    <tr st>
-                    <td data-title='Autor'>
-                            {% if mensaje.autor.id == request.user.id %}
-                                <a href="{% url 'editar_perfil' request.user.id %}"> {{ mensaje.autor }} </a><br>
-                            {% else %}
-                                <a href="{% url 'detalle_usuario' usuario.id %}"> {{ mensaje.autor }} </a><br>
-                            {% endif %}
 
-                    {% if request.user.is_staff %} Administrador<br>
-                    {% else %}
-                        Miembro<br>
-                    {% endif %}
-
-                    {% if  pdata.1 %}
-                        <img class="img-rounded" border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/><br>
-                    {% else %}
-                       <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/><br>
-                    {% endif %}
-
-                    Fecha de registro: <br> {{ mensaje.autor.date_joined|date:"M-d-Y" }} <br>
-                    Número de mensajes: {{ pdata.0 }}
-                {% endwith %}
-                </td>
-                <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
-                    {{ mensaje.contenido }}<br>
-                    <a class="citar" href="{% url 'mensajes' mensaje.tema.id %}">Ir al tema</a>
-                </td>
-
-                </tr>
-
-            	</tbody>
-            </table>
+                    </tbody>
+                </table>
             </div> <br>
         {% endfor %}
         {% include "paginador.html" %}
     {% else %}
-        <li>No hay mensajes publicados en este tema {{ tema }}</li>
+        <li>El usuario no ha publicado ningún mensaje</li>
     {% endif %}
 
 

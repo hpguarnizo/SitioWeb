@@ -41,10 +41,8 @@ INSTALLED_APPS = (
     'Foro',
     #aplicaciones de terceros
     'registration',
-    'django_wysiwyg',
     'crispy_forms',
-
-
+    'django_summernote',
 
 )
 
@@ -126,5 +124,5 @@ SITE_ID=1
 #Email backend
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-DJANGO_WYSIWYG_FLAVOR = "yui_advanced"
+
 

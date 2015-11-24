@@ -11,9 +11,12 @@
     </div>
 
     {% if object_list %}
-        {% if tema.autor.user.id == request.user.id and request.user.is_authenticated%}
+        {% if tema.autor.id == request.user.id and request.user.is_authenticated%}
             Tema: {{ tema.titulo }} - {{ tema.fecha|date:"M-d-Y" }}
             - Autor: <a href="{% url 'editar_perfil' request.user.id %}">{{ tema.autor }} </a>
+        {% elif tema.autor.is_active == 0 %}
+            Tema: {{ tema.titulo }} - {{ tema.fecha|date:"M-d-Y" }}
+            - Autor: {{ tema.autor }}
         {% else %}
             Tema: {{ tema.titulo }} - {{ tema.fecha|date:"M-d-Y" }}
             - Autor: <a href="{% url 'detalle_usuario' tema.autor.id %}">{{ tema.autor }} </a>
@@ -52,7 +55,9 @@
                     <tr>
                     <td data-title='Autor'>
                             {% if mensaje.autor.id == request.user.id and request.user.is_authenticated%}
-                                <a href="{% url 'editar_perfil' request.user.id %}"> {{ mensaje.autor }} </a><br>
+                                <a href="{% url 'editar_perfil' request.user.id %}">{{ mensaje.autor }} </a><br>
+                            {% elif mensaje.autor.is_active == 0 %}
+                                 {{ mensaje.autor }} <br>
                             {% else %}
                                 <a href="{% url 'detalle_usuario' mensaje.autor.id %}"> {{ mensaje.autor }} </a><br>
                             {% endif %}
@@ -62,7 +67,9 @@
                         Miembro<br>
                     {% endif %}
 
-                    {% if  pdata.1 %}
+                    {% if mensaje.autor.is_active == 0 %}
+                       <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/><br>
+                    {% elif  pdata.1 %}
                         <img class="img-rounded" border="0" alt="Profile Pic" src="{{ media_url }}{{ pdata.1 }}"/><br>
                     {% else %}
                        <img class="img-rounded" border="0" alt="Profile Pic" src="/media/imagenes/nouserimg.png" height="140" width="140"/><br>
@@ -74,7 +81,7 @@
                 </td>
                 <td align="justify" class="celdacontenido" data-title='{{ mensaje.fecha|date:"m-d-Y, h:i a" }}'>
                     {% if mensaje.apropiado == 1 %}
-                       {{ mensaje.contenido }}<br>
+                       {{ mensaje.contenido|safe }}<br>
                        <a class="citar" href="#">Citar</a>
                     {% else %}
                         <div class="inapropiado">
