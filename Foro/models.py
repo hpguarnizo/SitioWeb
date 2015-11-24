@@ -4,6 +4,7 @@ from django.conf import settings
 from Foro.util import reverse2
 
 
+
 class Foro(Model):
     titulo = CharField(max_length=60)
     descripcion = CharField(max_length=250)

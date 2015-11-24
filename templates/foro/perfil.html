@@ -4,8 +4,10 @@
 {% block content %}
     <div class="container-fluid">
 
-        <div class="row">
-            <div class="col-sm-5 ">
+        <a href="{% url 'home' %}">Foros</a> > Mi perfil
+
+        <div class="row col-sm-offset-2">
+            <div class="col-sm-4 ">
                 <br/>
                 <b>Imagen de perfil</b><br><br>
 
@@ -27,7 +29,7 @@
                 <br>
             </div>
 
-            <div class="col-sm-7">
+            <div class="col-sm-4">
                 <br>
                 <b>Información personal</b><br><br>
 
@@ -74,20 +76,19 @@
                 <div class="informacion">
                     {{ perfilusuario.user.last_login|date:"M, d-Y, h:i a" }} <br>
                 </div>
-
-                <div class="btn-group">
-
-                <form class="navbar-form nav-tabs-justified" method="get"
-                      action="{% url 'editar_user' object.user.id %}">
-                    <input type="submit" class="btn btn-primary" value="Editar Perfil"/>
-                </form>
-
-                <form class="navbar-form nav-tabs-justified" method="get" action="{% url 'auth_password_change' %}">
-
-                    <input type="submit" class="btn btn-primary" value="Cambiar contraseña"/>
-                </form>
-                </div>
             </div>
+
+            <div class="col-sm-4">
+                <br>
+                <b>Acciones</b><br><br>
+
+                <a href="{% url 'editar_user' object.user.id %}">Editar perfil</a> <br>
+
+                <a href="{% url 'auth_password_change' %}">Cambiar contraseña</a> <br>
+
+                <a href="{% url 'desactivar'  %}">Desactivar cuenta</a>
+            </div>
+
         </div>
     </div>
 

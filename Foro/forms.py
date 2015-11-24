@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 
 
 
-
 attrs_dict = { 'class': 'required' }
 
 
@@ -112,5 +111,8 @@ class EditUserForm(forms.ModelForm):
        if User.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
           raise forms.ValidationError("Esta dirección de correo está en uso")
        return email
+
+
+
 
 

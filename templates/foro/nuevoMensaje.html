@@ -14,7 +14,7 @@
     <form method="post" action="{% url 'crear_mensaje' %}">
         {% csrf_token %}
         <label for="mensaje">Mensaje:</label><br>
-        <textarea id="mensaje" name="mensaje" rows="20" cols="95" required></textarea> <br>
+        <textarea id="mensaje" name="mensaje" rows="15" cols="95" required></textarea> <br>
         <input type="hidden" name="tema" value="{{ tema }}"/>
         <input class="btn btn-primary" type="submit" name="confirmar" value="Confirmar"/>
 

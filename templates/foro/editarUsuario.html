@@ -6,6 +6,9 @@
 
 {% block content %}
 
+     <a href="{% url 'home' %}">Foros</a> > <a href="{% url 'editar_perfil' request.user.id %}">Mi perfil</a>
+     > Editar perfil
+    <br>
     <div class="col-sm-6 col-sm-offset-3">
         <h3>{% trans "Editar información" %}</h3>
        <form method="post" action="">

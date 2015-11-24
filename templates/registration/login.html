@@ -13,10 +13,10 @@
     <input class="btn btn-primary" type="submit" value="{% trans 'Ingresar' %}" />
     <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
+<br>
 <p>{% trans "¿Olvidaste tu contraseña?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Cámbiala" %}</a>.</p>
 <p>{% trans "¿No eres miembro?" %} <a href="{% url 'registration_register' %}">{% trans "Regístrate" %}</a>.</p>
-
+<p>{% trans "¿Has desactivado tu cuenta?" %} <a href="{% url 'activar' %}">{% trans "Actívala" %}</a></p>
 </div>
 
 

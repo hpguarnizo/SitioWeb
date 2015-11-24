@@ -8,6 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from Foro.util import redir
 from SitioWeb.settings import MEDIA_URL
+from django.contrib.auth import authenticate
 
 
 # Create your views here.
@@ -168,3 +169,34 @@ def CrearMensaje(request):
         return redirect('mensajes', pk=tema.id)
     else:
         return redirect('home')
+
+def DesactivarCuenta(request):
+    password=request.POST.get('password')
+    usuario=request.user
+    if usuario.check_password(password):
+       usuario.is_active=False
+       usuario.save()
+       return redirect('/accounts/logout/?next=/')
+    else:
+       context={'mensaje':'Contraseña incorrecta'}
+       return render(request,'foro/desactivarCuenta.html',context)
+
+
+def ActivarCuenta(request):
+    password=request.POST.get('password')
+    username=request.POST.get('username')
+    usuario=authenticate(username=username,password=password)
+    if usuario:
+       if usuario.is_active:
+          context={'mensaje':'Esta cuenta está activada'}
+          return render(request,'foro/activarCuenta.html',context)
+       else:
+         usuario.is_active=True
+         usuario.save()
+         return redirect('registration_activation_complete')
+    else:
+       context={'mensaje':'No existe el usuario'}
+       return render(request,'foro/activarCuenta.html',context)
+
+def prueba(request):
+    return render(request,'prueba.html')

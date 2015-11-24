@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block title %}{% trans "Activar cuenta" %}{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+
+        <a href="{% url 'home' %}">Foros</a> > Activar cuenta
+        <br>
+
+        <div class="col-sm-6 col-sm-offset-3">
+            <h3>{% trans "Activar cuenta" %}</h3>
+
+            <p>
+                {% blocktrans %}
+                    Por favor ingresa tu nombre de usuario y contraseña luego da click en confirmar para activar tu cuenta,
+
+                {% endblocktrans %}
+            </p>
+            {% if mensaje %}
+                <div class="inapropiado">
+                    {{ mensaje }} <br>
+                </div>
+            {% endif %}
+            <form  method="post" action="{% url 'estado_act' %}">
+                {% csrf_token %}
+
+                <label for="username">Nombre de usuario:</label><br>
+                <input id="username" type="text" name="username" required/>
+                <br>
+                <label for="password">Contraseña:</label><br>
+                <input id="password" type="password" name="password" required/>
+                <br><br>
+                <input class="btn btn-primary" type="submit" value="{% trans 'Confirmar' %}"/>
+
+
+            </form>
+
+
+        </div>
+    </div>
+
+{% endblock %}
